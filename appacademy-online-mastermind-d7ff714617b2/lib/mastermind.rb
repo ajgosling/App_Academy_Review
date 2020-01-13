@@ -15,6 +15,13 @@ class Code
 
     return str
   end
+
+  def exact_matches(other)
+
+  end
+
+  def near_matches(other)
+  end
 end
 
 class Game
@@ -23,4 +30,5 @@ end
 
 c = Code.new
 
-p c.pegs
+new_str = "cccba".split("")
+p "abccc".split("").count {|c, i| c == new_str[0]}
