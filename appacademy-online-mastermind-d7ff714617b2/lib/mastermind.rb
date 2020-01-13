@@ -2,19 +2,25 @@
 class Code
   attr_reader :pegs
 
-  # def random
+  PEGS = ["R", "G", "B", "Y", "O", "P"]
+  def initialize(pegs = Code.random)
+    @pegs = pegs
+  end
+
+  def self.random
+    str = ""
+    4.times do
+      str += PEGS.sample
+    end
+
+    return str
+  end
 end
 
 class Game
   attr_reader :secret_code
 end
 
-class Array
-  def average
+c = Code.new
 
-    return self.sum / self.length.to_f
-  end
-
-end
-
-p [1, 2, 3, 4].average
+p c.pegs
