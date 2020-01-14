@@ -2,15 +2,18 @@
 class Code
   attr_reader :pegs
 
-  PEGS = ["R", "G", "B", "Y", "O", "P"]
-  def initialize
+  def initialize(pegs)
     @pegs = pegs
+  end
+
+  def self.colors
+    return ["R", "G", "B", "Y", "O", "P"]
   end
 
   def self.random
     str = ""
     4.times do
-      str += PEGS.sample
+      str += Code.colors.sample
     end
 
     return Code.new(str)
@@ -26,7 +29,7 @@ class Code
 
   def near_matches(other)
     count = 0
-    PEGS.each do |color|
+    Code.colors.each do |color|
       count += [self.pegs.count(color), other.pegs.count(color)].min
     end
 
@@ -37,7 +40,56 @@ end
 class Game
   attr_reader :secret_code
 
-  def initialize(secret_code = Code.new)
+  def initialize(secret_code = Code.random)
+    @secret_code = secret_code
+
+    @guess_count = 0
 
   end
+
+  def play
+    guess = get_guess
+    until @secret_code.exact_matches(guess) == 4
+      @guess_count += 1
+
+      if @guess_count == 10
+        puts "Sorry! the code was #{@secret_code}"
+        return true
+      end
+
+      puts "exact matches: #{@secret_code.exact_matches(guess)}"
+      puts "near matches: #{@secret_code.near_matches(guess)}"
+      puts "guesses left: #{10 - guess_count}"
+
+      guess = get_guess
+    end
+
+    puts "Congrats! code was #{secret_code}"
+  end
+
+
+  def get_guess
+    guess = ""
+    until valid_guess?(guess)
+      print "give a guess luv: "
+      guess = gets.chomp.upcase
+    end
+
+    return Code.new(guess)
+  end
+
+  def valid_guess?(str)
+    str.length == 4 && str.split("").all? {|c| Code.colors.include?(c)}
+  end
+
 end
+
+
+# g = Game.new
+# g.play
+
+c1 = Code.new("GYGY")
+c2 = Code.new("YYGG")
+
+p c1.exact_matches(c2)
+p c1.near_matches(c2)
