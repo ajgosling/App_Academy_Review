@@ -21,12 +21,9 @@ class BattleshipGame
     return @board.won?
   end
 
-  # def play_turn
-  #   # need to curate string into position
-
-  #   pos = gets.chomp.split(",")
-  #   self.attack(pos)
-  # end
+  def play_turn
+    self.attack(@player.get_play)
+  end
 end
 
 # b = Board.new

@@ -47,10 +47,10 @@ class Board
 		@grid.flatten.none? {|el| el == :s}
 	end
 
+	def place_random_ship
+		raise if self.full?
+		coordinates = (0...@grid.length).to_a
+
+		@grid[coordinates.sample][coordinates.sample] = :s
+	end
 end
-
-b = Board.new
-p b[[1, 2]]
-
-b[[1, 2]] = :x
-p b[[1, 2]]
