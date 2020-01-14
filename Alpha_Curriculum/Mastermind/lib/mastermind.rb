@@ -17,18 +17,21 @@ class Code
 
   def self.parse(str)
     str = str.chomp.upcase
-    raise unless str.length == 4 && str.split("").all? {|c| PEGS.has_key?(c)}
+    unless str.length == 4 && str.chars.all? {|c| PEGS.has_key?(c)}
+      raise ArgumentError
+    end
+    new_pegs = str.chars.map {|c| PEGS[c]}
 
-    return Code.new(str)
+    return Code.new(new_pegs)
   end
 
   def self.random
-    str = ""
+    colors = []
     4.times do
-      str += PEGS.keys.sample
+      colors << PEGS.values.sample
     end
 
-    return Code.new(str)
+    return Code.new(colors)
   end
 
   def [](i)
@@ -36,21 +39,24 @@ class Code
   end
 
   def ==(other)
-    self.pegs == other
+    return false unless other.is_a?(Code)
+    return self.pegs == other.pegs
   end
 
   def exact_matches(other)
     count = 0
-    self.pegs.each_char.with_index do |c, i|
-      count += 1 if c == other.pegs[i]
+
+    4.times do |idx|
+      count += 1 if self[idx] == other[idx]
     end
+
     return count
   end
 
   def near_matches(other)
     count = 0
-    PEGS.keys.each do |color|
-      count += [self.pegs.count(color), other.pegs.count(color)].min
+    PEGS.values.each do |color|
+      count += [@pegs.count(color), other.pegs.count(color)].min
     end
 
     return count - self.exact_matches(other)
@@ -77,20 +83,24 @@ class Game
         return true
       end
 
-      puts "exact matches: #{@secret_code.exact_matches(guess)}"
-      puts "near matches: #{@secret_code.near_matches(guess)}"
-      puts "guesses left: #{10 - @guess_count}"
 
+      display_matches(guess)
       guess = get_guess
     end
 
     puts "Congrats! code was #{secret_code.pegs}"
   end
 
+  def display_matches(guess)
+    puts "exact matches: #{@secret_code.exact_matches(guess)}"
+    puts "near matches: #{@secret_code.near_matches(guess)}"
+    puts "guesses left: #{10 - @guess_count}"
+  end
 
   def get_guess
     print "give a guess luv: "
-    guess = gets.chomp.upcase
+    return Code.parse(gets.chomp.upcase)
+
 
     if valid_guess?(guess)
       return Code.new(guess)
@@ -109,6 +119,7 @@ class Game
   end
 
 end
-c1 = Code.random
-p c1[0]
+c1 = Code.parse("BBYY")
+c2 = Code.parse("BYBY")
+
 
