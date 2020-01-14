@@ -69,9 +69,15 @@ class Game
 
 
   def get_guess
-    guess = ""
+    print "give a guess luv: "
+    guess = gets.chomp.upcase
+
+    if valid_guess?(guess)
+      return Code.new(guess)
+    end
+
     until valid_guess?(guess)
-      print "give a guess luv: "
+      print "invalid guess! try again: "
       guess = gets.chomp.upcase
     end
 
@@ -85,11 +91,5 @@ class Game
 end
 
 
-# g = Game.new
-# g.play
-
-c1 = Code.new("GYGY")
-c2 = Code.new("YYGG")
-
-p c1.exact_matches(c2)
-p c1.near_matches(c2)
+g = Game.new
+g.play
