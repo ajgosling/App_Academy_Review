@@ -67,7 +67,15 @@ class ComputerPlayer
   end
 
   def guess(board)
+    letter_hash = Hash.new(0)
 
+    @candidate_words.each do |word|
+      word.split("").uniq.each do |uniq_char|
+        letter_hash[uniq_char] += 1
+      end
+    end
+
+    return letter_hash.sort_by {|k, v| v}[-1][0]
   end
 
   def handle_response(letter, arr)
