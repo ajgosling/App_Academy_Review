@@ -67,25 +67,49 @@ class ComputerPlayer
   end
 
   def guess(board)
-    letter_hash = Hash.new(0)
+    # return the most common letter in potential guesses that hasn't been guessed
+    @potential_guesses -= board
 
-    @candidate_words.each do |word|
-      word.split("").uniq.each do |uniq_char|
-        letter_hash[uniq_char] += 1
+    big_str = @candidate_words.join("")
+
+    # start by assigning guess to first possible letter
+    new_guess = @potential_guesses.first
+    guess_tally = big_str.count(new_guess)
+
+    @potential_guesses.each do |letter|
+      curr_guest_tally = big_str.count(letter)
+      if curr_guest_tally > guess_tally
+        new_guess = letter
+        guess_tally = curr_guest_tally
       end
     end
 
-    return letter_hash.sort_by {|k, v| v}[-1][0]
+    # delete guess from potential guesses
+    @potential_guesses.delete(new_guess)
+
+    return new_guess
   end
 
   def handle_response(letter, arr)
+    # filter out candidate words to keep only the words that have the letter at all designated indexes
+
+    @candidate_words.select! do |word|
+      if arr.all? {|idx| word[idx] == letter}
+        if word.count(letter) == arr.length
+          true
+        else
+          false
+        end
+      else
+        false
+      end
+    end
+
+    # iterate through secret word and replace each index with letter
     arr.each do |idx|
       @secret_word[idx] = letter
     end
 
-    @candidate_words.select! do |word|
-      arr.all? {|idx| word[idx] == letter} && arr.length == word.count(letter)
-    end
 
     return true
   end
