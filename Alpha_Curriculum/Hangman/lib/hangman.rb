@@ -12,16 +12,16 @@ class Hangman
   end
 
   def take_turn
-    guess = @guesser.guess
-    hits = @referee.check_guess(guess)
+    letter = @guesser.guess
+    hits = @referee.check_guess(letter)
 
-    @guesser.handle_response(hits)
-    self.update_board(hits, guess)
+    @guesser.handle_response(letter, hits)
+    self.update_board(letter, hits)
   end
 
-  def update_board(hits, guess)
+  def update_board(letter, hits)
     hits.each do |i|
-      @board[i] = guess
+      @board[i] = letter
     end
   end
 end
@@ -39,13 +39,15 @@ class HumanPlayer
 end
 
 class ComputerPlayer
-
+  attr_reader :candidate_words
   def initialize(dict)
-    @dict = dict
+    @dictionary = dict
+    @candidate_words = @dictionary
+    @potential_guesses = ("a".."z").to_a
   end
 
   def pick_secret_word
-    @secret_word = @dict.sample
+    @secret_word = @dictionary.sample
     return @secret_word.length
   end
 
@@ -57,4 +59,30 @@ class ComputerPlayer
 
     return hits
   end
+
+  def register_secret_length(len)
+    @word_length = len
+    @candidate_words.select! {|word| word.length == len}
+    @secret_word = Array.new(len)
+  end
+
+  def guess(board)
+
+  end
+
+  def handle_response(letter, arr)
+    arr.each do |idx|
+      @secret_word[idx] = letter
+    end
+
+    @candidate_words.select! do |word|
+      arr.all? {|idx| word[idx] == letter} && arr.length == word.count(letter)
+    end
+
+    return true
+  end
 end
+
+# c = ComputerPlayer.new
+
+# f = File.new("dictionary.txt")

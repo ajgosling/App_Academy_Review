@@ -99,7 +99,7 @@ class Game
 
   def get_guess
     print "give a guess luv: "
-    return Code.parse(gets.chomp.upcase)
+    return Code.parse(STDIN.gets.chomp.upcase)
 
 
     if valid_guess?(guess)
@@ -108,7 +108,7 @@ class Game
 
     until valid_guess?(guess)
       print "invalid guess! try again: "
-      guess = gets.chomp.upcase
+      guess = STDIN.gets.chomp.upcase
     end
 
     return Code.new(guess)
