@@ -198,10 +198,10 @@ class Dog
 
   BREEDS = ['Husky', 'Black Labrador', 'German Shepherd', 'Chihuahua']
 
-  def initialize(name, breed = BREEDS.sample)
-    @name = name
-    @breed = breed
-  end
+  # def initialize(name, breed = BREEDS.sample)
+  #   @name = name
+  #   @breed = breed
+  # end
 
   def play_with(thing)
     thing.receive_love
@@ -215,10 +215,10 @@ end
 class Human
   attr_accessor :happy
 
-  def initialize(name)
-    @name = name
-    @happy = false
-  end
+  # def initialize(name)
+  #   @name = name
+  #   @happy = false
+  # end
 
   def happy?
     return @happy
