@@ -5,5 +5,6 @@ def execute(sql)
   query_result = conn.exec(sql).values
   conn.close
 
+
   query_result
 end
