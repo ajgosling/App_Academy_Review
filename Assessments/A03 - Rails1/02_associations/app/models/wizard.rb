@@ -1,0 +1,32 @@
+class Wizard < ApplicationRecord
+    belongs_to :school,
+        foreign_key: :school_id,
+        class_name: :School
+    has_many :course_enrollments,
+        foreign_key: :student_id,
+        class_name: :CourseEnrollment
+    has_many :courses,
+        through: :course_enrollments,
+        source: :course
+    has_many :instructors,
+        through: :courses,
+        source: :instructor
+    has_many :taught_courses,
+        foreign_key: :instructor_id,
+        class_name: :Course
+    has_many :students,
+        through: :taught_courses,
+        source: :students
+    belongs_to :house,
+        foreign_key: :house_id,
+        class_name: :House
+    has_one :wand,
+        foreign_key: :owner_id,
+        class_name: :Wand
+    has_one :house_master,
+        through: :house,
+        source: :master
+    has_one :headmaster,
+        through: :school,
+        source: :headmaster
+end
