@@ -120,3 +120,19 @@ function sumOfNPrimes(n) {
 // console.log(sumOfNPrimes(1));
 // console.log(sumOfNPrimes(4));
 // console.log(sumOfNPrimes(20));
+
+function printCallback(names) {
+    names.forEach((name) => {
+        console.log(name);
+    });
+}
+
+// printCallback(["Mary", "Brian", "Leo"]);
+
+function titleize(names, cb) {
+    names.map((name) => `Mx. ${name} Jingleheimer Schmidt`);
+
+    return names;
+}
+
+console.log(titleize(["Mary", "Brian", "Leo"], printCallback));
