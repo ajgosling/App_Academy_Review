@@ -178,3 +178,28 @@ let kate = new Elephant("Kate", 234, ["writing letters", "stealing peanuts"]);
 let micah = new Elephant("Micah", 143, ["trotting", "playing tic tac toe", "doing elephant ballet"]);
 
 let herd = [ellie, charlie, kate, micah];
+
+Elephant.paradeHelper = function (ele) {
+    console.log(`${ele.name} is trotting by!`);
+    ele.play();
+
+};
+
+// herd.forEach(Elephant.paradeHelper);
+
+function dinerBreakfast() {
+    const order = ["scrambled eggs and bacon"];
+
+    console.log(`I'd like ${order.join()} please!`)
+
+    return function(newOrder) {
+        order.push(newOrder);
+        console.log(`I'd like ${order.join(" and ")} please!`)
+    };
+}
+
+let bfastOrder = dinerBreakfast();
+
+bfastOrder("chocolate chip pancakes");
+
+bfastOrder("grits");
