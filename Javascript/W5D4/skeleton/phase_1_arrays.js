@@ -10,7 +10,7 @@ Array.prototype.uniq = function() {
     return uniqArr;
 };
 
-console.log([1, 1, 1, 2, 3, 3, "dog", "dog"].uniq());
+// console.log([1, 1, 1, 2, 3, 3, "dog", "dog"].uniq());
 
 // Array#twoSum - returns an array of position pairs where the elements sum to zero
 
@@ -26,7 +26,7 @@ Array.prototype.twoSum = function() {
     return pairsArr;
 };
 
-console.log([1, 1, -1, 2, -2].twoSum());
+// console.log([1, 1, -1, 2, -2].twoSum());
 
 // Array#transpose - where we have a two - dimensional array representing a matrix.returns the transpose
 // should not mutate the original array
@@ -47,6 +47,6 @@ const m1 = [
     [1, 2, 3],
     [4, 5, 6],
     [7, 8, 9]
-]
+];
 
-console.log(m1.transpose());
+// console.log(m1.transpose());
