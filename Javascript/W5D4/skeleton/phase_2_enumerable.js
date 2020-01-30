@@ -26,15 +26,32 @@ Array.prototype.myMap = function (cb) {
 // Array#myReduce(callback[, initialValue])
 // without initialValue
 
-Array.prototype.myReduce = function (cb, initialVal = this[0]) {
-    this.length
+Array.prototype.myReduce = function (cb, initialValue = undefined) {
+    if (initialValue === undefined) {
+        i = 1;
+        initialValue = this[0];
+    } else {
+        i = 0;
+        // we already have initial value
+    }
+
+    let acc = initialValue;
+    while (i < this.length) {
+        acc = cb(acc, this[i]);
+        i += 1;
+    }
+
+    return acc;
 };
 
-[1, 2, 3].myReduce(function (acc, el) {
+let t1 = [1, 2, 3].myReduce(function (acc, el) {
     return acc + el;
 }); // => 6
 
 // with initialValue
-[1, 2, 3].myReduce(function (acc, el) {
+let t2 = [1, 2, 3].myReduce(function (acc, el) {
     return acc + el;
 }, 25); // => 31
+
+// console.log(t1);
+// console.log(t2);
