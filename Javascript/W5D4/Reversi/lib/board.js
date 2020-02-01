@@ -5,6 +5,23 @@ let Piece = require("./piece");
  * and two white pieces at [3, 3] and [4, 4]
  */
 function _makeGrid () {
+  const grid = [
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]
+  ];
+
+  grid[3][3] = new Piece('white');
+  grid[3][4] = new Piece('black');
+  grid[4][3] = new Piece('black');
+  grid[4][4] = new Piece('white');
+
+  return grid;
 }
 
 /**
@@ -25,12 +42,19 @@ Board.DIRS = [
  * throwing an Error if the position is invalid.
  */
 Board.prototype.getPiece = function (pos) {
+  return this.grid[pos[0]][pos[1]];
 };
 
 /**
  * Checks if there are any valid moves for the given color.
  */
 Board.prototype.hasMove = function (color) {
+  // must place piece so that an opponent's piece, or row of pieces, is surrounded by your pieces
+  // find all empty positions
+  // for each empty position, check around for a piece of the opposite color
+    // if we find one, iterate through that direction, looking for piece of same color
+      // return true if conditions are met
+
 };
 
 /**
@@ -38,12 +62,20 @@ Board.prototype.hasMove = function (color) {
  * matches a given color.
  */
 Board.prototype.isMine = function (pos, color) {
+  let piece = this.getPiece(pos);
+
+  if (piece) {
+    return piece.color === color;
+  } else {
+    return undefined;
+  }
 };
 
 /**
  * Checks if a given position has a piece on it.
  */
 Board.prototype.isOccupied = function (pos) {
+  return this.getPiece(pos) != undefined;
 };
 
 /**
@@ -51,6 +83,7 @@ Board.prototype.isOccupied = function (pos) {
  * the black player are out of moves.
  */
 Board.prototype.isOver = function () {
+  return !this.hasMove("black") && !this.hasMove("white");
 };
 
 /**
