@@ -15,12 +15,10 @@ function _makeGrid () {
     [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]
   ];
-
   grid[3][3] = new Piece('white');
   grid[3][4] = new Piece('black');
   grid[4][3] = new Piece('black');
   grid[4][4] = new Piece('white');
-
   return grid;
 }
 
@@ -55,7 +53,24 @@ Board.prototype.hasMove = function (color) {
     // if we find one, iterate through that direction, looking for piece of same color
       // return true if conditions are met
 
+
+  let i = 0;
+
+  console.log(this.grid)
+  while (i < 8) {
+    let j = 0;
+    while (j < 8) {
+      if (!this.getPiece([i, j])) {
+        // square is empty
+        // console.log(this.DIRS);
+      }
+      j += 1;
+    }
+
+    i += 1;
+  }
 };
+
 
 /**
  * Checks if the piece at a given position
@@ -138,4 +153,6 @@ Board.prototype.validMove = function (pos, color) {
 Board.prototype.validMoves = function (color) {
 };
 
+b1 = new Board;
+b1.hasMove();
 module.exports = Board;
