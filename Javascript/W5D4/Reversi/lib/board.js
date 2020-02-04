@@ -5,20 +5,14 @@ let Piece = require("./piece");
  * and two white pieces at [3, 3] and [4, 4]
  */
 function _makeGrid () {
-  const grid = [
-    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
-    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
-    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
-    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
-    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
-    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
-    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
-    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]
-  ];
-  grid[3][3] = new Piece('white');
-  grid[3][4] = new Piece('black');
-  grid[4][3] = new Piece('black');
-  grid[4][4] = new Piece('white');
+  let grid = new Array(8);
+  for(let i = 0; i < grid.length; i++) {
+    grid[i] = new Array(8);
+  }
+  grid[3][4] = new Piece("black");
+  grid[4][3] = new Piece("black");
+  grid[3][3] = new Piece("white");
+  grid[4][4] = new Piece("white");
   return grid;
 }
 
@@ -47,28 +41,27 @@ Board.prototype.getPiece = function (pos) {
  * Checks if there are any valid moves for the given color.
  */
 Board.prototype.hasMove = function (color) {
-  // must place piece so that an opponent's piece, or row of pieces, is surrounded by your pieces
-  // find all empty positions
-  // for each empty position, check around for a piece of the opposite color
-    // if we find one, iterate through that direction, looking for piece of same color
-      // return true if conditions are met
+  // iterate through every position
+  // find undefined
+    // oppositie color is adjacent
+      //iterate down that DIRection
+        // row max of 7
 
 
-  let i = 0;
-
-  console.log(this.grid)
-  while (i < 8) {
-    let j = 0;
-    while (j < 8) {
-      if (!this.getPiece([i, j])) {
-        // square is empty
-        // console.log(this.DIRS);
+  for (let row = 0; row < this.grid.length; row++) {
+    for (let col = 0; col < this.grid[row].length; col++) {
+      let pos = [row, col];
+      if (!this.getPiece(pos)) {
+        for(let dir = 0; dir < this.DIRS.length; dir++) {
+          const newPos = [];
+          newPos[0] = pos[0] + dir[0];
+          newPos[1] = pos[1] + dir[1];
+        }
       }
-      j += 1;
     }
-
-    i += 1;
   }
+
+
 };
 
 
@@ -77,20 +70,12 @@ Board.prototype.hasMove = function (color) {
  * matches a given color.
  */
 Board.prototype.isMine = function (pos, color) {
-  let piece = this.getPiece(pos);
-
-  if (piece) {
-    return piece.color === color;
-  } else {
-    return undefined;
-  }
 };
 
 /**
  * Checks if a given position has a piece on it.
  */
 Board.prototype.isOccupied = function (pos) {
-  return this.getPiece(pos) != undefined;
 };
 
 /**
@@ -98,7 +83,6 @@ Board.prototype.isOccupied = function (pos) {
  * the black player are out of moves.
  */
 Board.prototype.isOver = function () {
-  return !this.hasMove("black") && !this.hasMove("white");
 };
 
 /**
@@ -153,6 +137,4 @@ Board.prototype.validMove = function (pos, color) {
 Board.prototype.validMoves = function (color) {
 };
 
-b1 = new Board;
-b1.hasMove();
 module.exports = Board;

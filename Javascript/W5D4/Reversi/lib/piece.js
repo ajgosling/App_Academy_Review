@@ -9,18 +9,18 @@ function Piece (color) {
  * Returns the color opposite the current piece.
  */
 Piece.prototype.oppColor = function () {
-    if (this.color === 'black') {
-        return 'white';
-    } else {
-        return 'black';
-    }
+    return this.color === "white" ? "black" : "white";
 };
 
 /**
  * Changes the piece's color to the opposite color.
  */
 Piece.prototype.flip = function () {
-    this.color = this.oppColor();
+    if (this.color === "white") {
+        this.color = "black";
+    } else {
+        this.color = "white";
+    }
 };
 
 /**
@@ -28,6 +28,12 @@ Piece.prototype.flip = function () {
  * based on its color.
  */
 Piece.prototype.toString = function () {
+    // switch (this.color) {
+    //     case "white":
+    //         return "W";
+    //     case "black":
+    //         return "B";
+    // }
     return this.color[0].toUpperCase();
 };
 
