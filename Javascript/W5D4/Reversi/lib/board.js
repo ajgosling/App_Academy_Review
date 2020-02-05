@@ -40,28 +40,53 @@ Board.prototype.getPiece = function (pos) {
 /**
  * Checks if there are any valid moves for the given color.
  */
+
+Board.prototype.posDirArr = function (pos, dir) {
+  const dirArr = [];
+  let tempPos = pos;
+
+  while (tempPos[0] < 7 && tempPos[0] >= 0 && tempPos[1] < 7 && tempPos[1] >= 0) {
+    tempPos = tempPos.slice();
+    tempPos[0] += dir[0];
+    tempPos[1] += dir[1];
+    dirArr.push(tempPos);
+  }
+  return dirArr;
+};
+
 Board.prototype.hasMove = function (color) {
   // iterate through every position
   // find undefined
     // oppositie color is adjacent
       //iterate down that DIRection
         // row max of 7
-
-
   for (let row = 0; row < this.grid.length; row++) {
     for (let col = 0; col < this.grid[row].length; col++) {
       let pos = [row, col];
       if (!this.getPiece(pos)) {
-        for(let dir = 0; dir < this.DIRS.length; dir++) {
+        for (let dir = 0; dir < Board.DIRS.length; dir++) {
           const newPos = [];
-          newPos[0] = pos[0] + dir[0];
-          newPos[1] = pos[1] + dir[1];
+          let currDir = Board.DIRS[dir];
+          newPos[0] = pos[0] + currDir[0];
+          newPos[1] = pos[1] + currDir[1];
+          if (newPos[0] < 8 && newPos[0] > 0 && newPos[1] < 8 && newPos[1] > 0) {
+            if (this.getPiece(newPos) && this.getPiece(newPos).color !== color) {
+              // get possible positions
+              dirArr = this.posDirArr(newPos, Board.DIRS[dir]);
+              for (let i = 0; i < dirArr.length; i++) {
+                if (!this.getPiece(dirArr[i])) {
+                  break;
+                } else if (this.getPiece(dirArr[i]).color === color) {
+                  return true;
+                }
+              }
+            }
+          }
         }
       }
     }
   }
-
-
+  return false;
 };
 
 
@@ -137,4 +162,7 @@ Board.prototype.validMove = function (pos, color) {
 Board.prototype.validMoves = function (color) {
 };
 
+// b1 = new Board;
+// console.log(b1);
+// console.log(b1.hasMove('black'));
 module.exports = Board;
