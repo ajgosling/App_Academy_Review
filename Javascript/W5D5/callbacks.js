@@ -83,5 +83,44 @@ function askIfGreaterThan(el1, el2, cb) {
             cb(false);
         }
     });
-    reader.close();
 }
+
+function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {
+    if (i < arr.length - 1) {
+        askIfGreaterThan(arr[i], arr[i+1], (isGreaterThan) => {
+            if (isGreaterThan) {
+                [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                madeAnySwaps = true;
+            }
+            innerBubbleSortLoop(arr, i + 1, madeAnySwaps, outerBubbleSortLoop);
+        });
+    } else {
+        // we are at the end of the array
+        outerBubbleSortLoop(madeAnySwaps);
+    }
+}
+
+// const arr = [3, 2, 1]
+// innerBubbleSortLoop(arr, 0, false, (swaps) => {
+//     console.log(`made swaps: ${swaps}`)
+//     console.log(arr);
+//     reader.close();
+// });
+
+function absurdBubbleSort(arr, sortCompletionCallback) {
+    let oBSLoop = function(madeAnySwaps) {
+        // madeAnySwaps ? innerBubbleSortLoop(arr, 0, false, oBSLoop) : sortCompletionCallback(arr)
+        if (madeAnySwaps) {
+            innerBubbleSortLoop(arr, 0, false, oBSLoop);
+        } else {
+            sortCompletionCallback(arr);
+        }
+    };
+
+    oBSLoop(true);
+}
+
+absurdBubbleSort([3, 2, 1], (arr) => {
+    console.log('well done! sorted arr is :', arr);
+    reader.close();
+});
