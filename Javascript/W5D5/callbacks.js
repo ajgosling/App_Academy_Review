@@ -66,7 +66,22 @@ function addNumbers(sum, numsLeft, completionCallback) {
     }
 }
 
-addNumbers(0, 3, sum => {
-    console.log(`Total Sum: ${sum}`);
+// addNumbers(0, 3, sum => {
+//     console.log(`Total Sum: ${sum}`);
+//     reader.close();
+// });
+
+function absurdBubbleSort(arr, sortCompletionCallback) {
+
+}
+
+function askIfGreaterThan(el1, el2, cb) {
+    reader.question(`is ${el1} greater than ${el2}? y/n: `, res => {
+        if (res === 'y' || res === 'yes') {
+            cb(true);
+        } else {
+            cb(false);
+        }
+    });
     reader.close();
-});
+}
