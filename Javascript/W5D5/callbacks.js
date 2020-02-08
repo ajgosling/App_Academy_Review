@@ -116,7 +116,7 @@ function addNumbers(sum, numsLeft, completionCallback) {
 //     reader.close();
 // });
 
-Function.prototype.myBind = function(ctx) {
+Function.prototype.myBind = (ctx) => {
     return () => this.apply(ctx);
 };
 
@@ -139,3 +139,5 @@ const myBoundTurnOn = turnOn.myBind(lamp);
 
 boundTurnOn(); // should say "Turning on a lamp"
 myBoundTurnOn(); // should say "Turning on a lamp"
+
+// Function.prototype.myThrottle = function(interval)
