@@ -111,7 +111,9 @@ function _positionsToFlip (board, pos, color, dir, piecesToFlip) {
  * Throws an error if the position represents an invalid move.
  */
 Board.prototype.placePiece = function (pos, color) {
-  // if (this.validMove())
+  if (this.validMove(pos, color)) {
+
+  }
 };
 
 /**
@@ -164,7 +166,7 @@ Board.prototype.validMoves = function (color) {
       }
     }
   }
-  return this.validMovesArr;
+  return validMovesArr;
 };
 
 // b1 = new Board;

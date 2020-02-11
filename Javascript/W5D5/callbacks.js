@@ -116,7 +116,7 @@ function addNumbers(sum, numsLeft, completionCallback) {
 //     reader.close();
 // });
 
-Function.prototype.myBind = (ctx) => {
+Function.prototype.myBind = function(ctx) {
     return () => this.apply(ctx);
 };
 
@@ -132,12 +132,21 @@ const turnOn = function () {
 
 const lamp = new Lamp();
 
-turnOn(); // should not work the way we want it to
+// turnOn(); // should not work the way we want it to
 
 const boundTurnOn = turnOn.bind(lamp);
 const myBoundTurnOn = turnOn.myBind(lamp);
 
-boundTurnOn(); // should say "Turning on a lamp"
-myBoundTurnOn(); // should say "Turning on a lamp"
+// boundTurnOn(); // should say "Turning on a lamp"
+// myBoundTurnOn(); // should say "Turning on a lamp"
 
-// Function.prototype.myThrottle = function(interval)
+Function.prototype.myThrottle = function(interval) {
+    let tooSoon = false;
+    return () => {
+        if (!tooSoon) {
+            // we can run the function
+            tooSoon = true;
+            setTimeout(() => tooSoon = false, interval)
+        }
+    }
+};
