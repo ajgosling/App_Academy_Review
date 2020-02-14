@@ -117,7 +117,7 @@ function absurdBubbleSort(arr, sortCompletionCallback) {
 // });
 
 Function.prototype.myBind = function (context, ...args) {
-    console.log(args);
+    // console.log(args);
     return () => ( this.apply(context, args));
 };
 
@@ -138,5 +138,93 @@ const lamp = new Lamp();
 const boundTurnOn = turnOn.bind(lamp, "kevin", "blue");
 const myBoundTurnOn = turnOn.myBind(lamp, "aj", "purple");
 
-boundTurnOn(); // should say "Turning on a lamp"
-myBoundTurnOn(); // should say "Turning on a lamp"
+// boundTurnOn(); // should say "Turning on a lamp"
+// myBoundTurnOn(); // should say "Turning on a lamp"
+
+Function.prototype.myThrottle = function (interval) {
+    console.log(this);
+    // console.log(myArgs);
+    let tooSoon = false;
+    return (...args) => {
+        console.log(args);
+        if (!tooSoon) {
+
+            this(...args);
+            tooSoon = true;
+            setTimeout(() => {
+                tooSoon = false;
+            }, interval);
+        }
+    };
+};
+
+// class Neuron {
+//     fire(name1, name2) {
+//         console.log(`Firing! ${name1} ${name2}`);
+//     }
+// }
+
+// const neuron = new Neuron();
+
+// neuron.fire = neuron.fire.myThrottle(500);
+
+// const interval = setInterval(() => {
+//     neuron.fire("kevin", "aj");
+// }, 10);
+
+
+class SearchBar {
+    constructor() {
+        this.query = "";
+
+        this.type = this.type.bind(this);
+        this.search = this.search.bind(this);
+    }
+
+    type(letter) {
+        this.query += letter;
+        this.search();
+    }
+
+    search() {
+        console.log(`searching for ${this.query}`);
+    }
+}
+
+const searchBar = new SearchBar();
+
+const queryForHelloWorld = () => {
+    searchBar.type("h");
+    searchBar.type("e");
+    searchBar.type("l");
+    searchBar.type("l");
+    searchBar.type("o");
+    searchBar.type(" ");
+    searchBar.type("w");
+    searchBar.type("o");
+    searchBar.type("r");
+    searchBar.type("l");
+    searchBar.type("d");
+    searchBar.type("!");
+    searchBar.type("!");
+    searchBar.type("!");
+    searchBar.type("!");
+    searchBar.type("!");
+};
+
+Function.prototype.myDebounce = function (interval) {
+    let prevCall;
+    return () => {
+        prevCall = Date.now();
+        setTimeout(() => {
+            let newCall = Date.now();
+            if (newCall - prevCall >= 499) {
+                this();
+            }
+            prevCall = newCall;
+        }, 500);
+    };
+};
+
+searchBar.search = searchBar.search.myDebounce(500);
+queryForHelloWorld();
