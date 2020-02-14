@@ -47,12 +47,12 @@ class Clock {
 
 // const clock = new Clock();
 
-const readline = require('readline');
+// const readline = require('readline');
 
-const reader = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+// const reader = readline.createInterface({
+//     input: process.stdin,
+//     output: process.stdout
+// });
 
 function addNumbers(sum, numsLeft, completionCallback) {
     if (numsLeft > 0) {
@@ -111,7 +111,32 @@ function absurdBubbleSort(arr, sortCompletionCallback) {
     oBSLoop(true);
 }
 
-absurdBubbleSort([3, 2, 1], (arr) => {
-    console.log('well done! sorted arr is :', arr);
-    reader.close();
-});
+// absurdBubbleSort([3, 2, 1], (arr) => {
+//     console.log('well done! sorted arr is :', arr);
+//     reader.close();
+// });
+
+Function.prototype.myBind = function (context, ...args) {
+    console.log(args);
+    return () => ( this.apply(context, args));
+};
+
+class Lamp {
+    constructor() {
+        this.name = "lamp";
+    }
+}
+
+const turnOn = function (title, color) {
+    console.log(`Turning on a ${color} ${this.name}, ${title}!`);
+};
+
+const lamp = new Lamp();
+
+// turnOn(); // should not work the way we want it to
+
+const boundTurnOn = turnOn.bind(lamp, "kevin", "blue");
+const myBoundTurnOn = turnOn.myBind(lamp, "aj", "purple");
+
+boundTurnOn(); // should say "Turning on a lamp"
+myBoundTurnOn(); // should say "Turning on a lamp"
