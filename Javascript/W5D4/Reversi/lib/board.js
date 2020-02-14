@@ -101,7 +101,30 @@ Board.prototype.isValidPos = function (pos) {
  *
  * Returns null if no pieces of the opposite color are found.
  */
-function _positionsToFlip (board, pos, color, dir, piecesToFlip) {
+function _positionsToFlip (board, pos, color, dir) {
+  const positions = [];
+  const newPos = [];
+  newPos[0] = pos[0] + dir[0];
+  newPos[1] = pos[1] + dir[1];
+  if (newPos[0] < 8 && newPos[0] > 0 && newPos[1] < 8 && newPos[1] > 0) {
+    if (board.getPiece(newPos) && board.getPiece(newPos).color !== color) {
+      positions.push(newPos)
+      // get possible positions
+      dirArr = board.posDirArr(newPos, Board.DIRS[dir]);
+      for (let i = 0; i < dirArr.length; i++) {
+        if (!board.getPiece(dirArr[i])) {
+          // empty space, wasn't valid direction
+          return null;
+        } else if (board.getPiece(dirArr[i]).color !== color) {
+          positions.push(dirArr[i]);
+        } else {
+          // same color as passed in
+          return positions;
+        }
+      }
+    }
+  }
+  return null;
 }
 
 /**
@@ -112,7 +135,7 @@ function _positionsToFlip (board, pos, color, dir, piecesToFlip) {
  */
 Board.prototype.placePiece = function (pos, color) {
   if (this.validMove(pos, color)) {
-
+    this.grid[pos[0]][pos[1]] = new Piece(color);
   }
 };
 
@@ -130,26 +153,25 @@ Board.prototype.print = function () {
 Board.prototype.validMove = function (pos, color) {
   if (!this.getPiece(pos)) {
     for (let dir = 0; dir < Board.DIRS.length; dir++) {
-      const newPos = [];
-      let currDir = Board.DIRS[dir];
-      newPos[0] = pos[0] + currDir[0];
-      newPos[1] = pos[1] + currDir[1];
-      if (newPos[0] < 8 && newPos[0] > 0 && newPos[1] < 8 && newPos[1] > 0) {
-        if (this.getPiece(newPos) && this.getPiece(newPos).color !== color) {
-          // get possible positions
-          dirArr = this.posDirArr(newPos, Board.DIRS[dir]);
-          for (let i = 0; i < dirArr.length; i++) {
-            if (!this.getPiece(dirArr[i])) {
-              break;
-            } else if (this.getPiece(dirArr[i]).color === color) {
-              return true;
-            }
-          }
-        }
-      }
+      return !!_positionsToFlip(this, pos, color, Board.DIRS[dir]);
+      // const newPos = [];
+      // newPos[0] = pos[0] + currDir[0];
+      // newPos[1] = pos[1] + currDir[1];
+      // if (newPos[0] < 8 && newPos[0] > 0 && newPos[1] < 8 && newPos[1] > 0) {
+      //   if (this.getPiece(newPos) && this.getPiece(newPos).color !== color) {
+      //     // get possible positions
+      //     dirArr = this.posDirArr(newPos, Board.DIRS[dir]);
+      //     for (let i = 0; i < dirArr.length; i++) {
+      //       if (!this.getPiece(dirArr[i])) {
+      //         break;
+      //       } else if (this.getPiece(dirArr[i]).color === color) {
+      //         return true;
+      //       }
+      //     }
+      //   }
+      // }
     }
   }
-  return false;
 };
 
 /**

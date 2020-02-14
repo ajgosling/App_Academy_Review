@@ -47,12 +47,12 @@ class Clock {
 
 // const clock = new Clock();
 
-// const readline = require('readline');
+const readline = require('readline');
 
-// const reader = readline.createInterface({
-//     input: process.stdin,
-//     output: process.stdout
-// });
+const reader = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
 function addNumbers(sum, numsLeft, completionCallback) {
     if (numsLeft > 0) {
@@ -73,80 +73,45 @@ function addNumbers(sum, numsLeft, completionCallback) {
 
 
 
-// function askIfGreaterThan(el1, el2, cb) {
-//     reader.question(`is ${el1} greater than ${el2}? y/n: `, res => {
-//         if (res === 'y' || res === 'yes') {
-//             cb(true);
-//         } else {
-//             cb(false);
-//         }
-//     });
-// }
+function askIfGreaterThan(el1, el2, cb) {
+    reader.question(`is ${el1} greater than ${el2}? y/n: `, res => {
+        if (res === 'y' || res === 'yes') {
+            cb(true);
+        } else {
+            cb(false);
+        }
+    });
+}
 
-// function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {
-//     if (i < arr.length - 1) {
-//         askIfGreaterThan(arr[i], arr[i+1], (isGreaterThan) => {
-//             if (isGreaterThan) {
-//                 [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-//                 madeAnySwaps = true;
-//             }
-//             innerBubbleSortLoop(arr, i + 1, madeAnySwaps, outerBubbleSortLoop);
-//         });
-//     } else {
-//         // we are at the end of the array
-//         outerBubbleSortLoop(madeAnySwaps);
-//     }
-// }
-
-// function absurdBubbleSort(arr, sortCompletionCallback) {
-//     let oBSLoop = function(madeAnySwaps) {
-//         // madeAnySwaps ? innerBubbleSortLoop(arr, 0, false, oBSLoop) : sortCompletionCallback(arr)
-//         if (madeAnySwaps) {
-//             innerBubbleSortLoop(arr, 0, false, oBSLoop);
-//         } else {
-//             sortCompletionCallback(arr);
-//         }
-//     };
-
-//     oBSLoop(true);
-// }
-
-// absurdBubbleSort([3, 2, 1], (arr) => {
-//     console.log('well done! sorted arr is :', arr);
-//     reader.close();
-// });
-
-Function.prototype.myBind = function(ctx) {
-    return () => this.apply(ctx);
-};
-
-class Lamp {
-    constructor() {
-        this.name = "a lamp";
+function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {
+    if (i < arr.length - 1) {
+        askIfGreaterThan(arr[i], arr[i+1], (isGreaterThan) => {
+            if (isGreaterThan) {
+                [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                madeAnySwaps = true;
+            }
+            innerBubbleSortLoop(arr, i + 1, madeAnySwaps, outerBubbleSortLoop);
+        });
+    } else {
+        // we are at the end of the array
+        outerBubbleSortLoop(madeAnySwaps);
     }
 }
 
-const turnOn = function () {
-    console.log("Turning on " + this.name);
-};
-
-const lamp = new Lamp();
-
-// turnOn(); // should not work the way we want it to
-
-const boundTurnOn = turnOn.bind(lamp);
-const myBoundTurnOn = turnOn.myBind(lamp);
-
-// boundTurnOn(); // should say "Turning on a lamp"
-// myBoundTurnOn(); // should say "Turning on a lamp"
-
-Function.prototype.myThrottle = function(interval) {
-    let tooSoon = false;
-    return () => {
-        if (!tooSoon) {
-            // we can run the function
-            tooSoon = true;
-            setTimeout(() => tooSoon = false, interval)
+function absurdBubbleSort(arr, sortCompletionCallback) {
+    let oBSLoop = function(madeAnySwaps) {
+        // madeAnySwaps ? innerBubbleSortLoop(arr, 0, false, oBSLoop) : sortCompletionCallback(arr)
+        if (madeAnySwaps) {
+            innerBubbleSortLoop(arr, 0, false, oBSLoop);
+        } else {
+            sortCompletionCallback(arr);
         }
-    }
-};
+    };
+
+    oBSLoop(true);
+}
+
+absurdBubbleSort([3, 2, 1], (arr) => {
+    console.log('well done! sorted arr is :', arr);
+    reader.close();
+});
