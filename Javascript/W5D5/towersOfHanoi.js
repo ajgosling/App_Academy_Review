@@ -1,21 +1,31 @@
 
-// function Cat(name, color) {
-//     this.name = name;
-//     this.color = color;
-// }
 
-// Cat.prototype.meow = function() {
-//     console.log(`Hi i'm ${this.name}`);
-// };
+const readline = require('readline');
 
-class Cat {
-    constructor(name, color) {
-        this.name = name;
-        this.color = color;
+const reader = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+class Game {
+    constructor() {
     }
 
-    meow() {
-        console.log(`Hi i'm ${this.name}`);
+    run(compCB) {
     }
+    promptMove() {
+    }
+
+    isValidMove(startIdx, endIdx) {
+    }
+
+    move(startIdx, endIdx) {
+    }
+
+    print() {
+    }
+
+    isWon() {
+    }
+
 }
-
