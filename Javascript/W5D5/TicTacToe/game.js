@@ -9,6 +9,3 @@ const Board = require('./board');
 
 //     }
 // }
-
-b = new Board("orange");
-console.log(b);
