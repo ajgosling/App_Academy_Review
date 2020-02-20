@@ -2,9 +2,9 @@
 class Board {
     constructor() {
         this.grid = [
-            ["X", "O", "O"],
-            ["X", "O", null],
-            ["O", "X", null]
+            [null, null, null],
+            [null, null, null],
+            [null, null, null]
         ];
         this.winningPositions = [
             // horizontal
@@ -16,7 +16,7 @@ class Board {
             [[0, 1], [1, 1], [2, 1]],
             [[0, 2], [1, 2], [2, 2]],
             // diagonal
-            [[0, 0], [1, 1], [2, 2]],
+            // [[0, 0], [1, 1], [2, 2]],
             [[0, 2], [1, 1], [2, 0]]
         ];
     }
@@ -30,8 +30,8 @@ class Board {
             let firstItem = this.value(firstPos);
 
             if (firstItem) {
-                if (posArr.every(el => el === firstItem)) {
-                    return true;
+                if (posArr.every(pos => this.value(pos) === firstItem)) {
+                    return firstItem;
                 }
             }
         }
@@ -50,10 +50,16 @@ class Board {
     }
 
     place_mark(pos, mark) {
+        this.grid[pos[0]][pos[1]] = mark;
     }
 }
 
 let b = new Board();
+// console.log(b.grid);
+// b.place_mark([1, 1], "X")
+// b.place_mark([0, 1], "X")
+// b.place_mark([2, 1], "X")
+// console.log(b.grid);
 // console.log(b.value([2, 0]));
 // console.log(b.value([1, 1]));
 // console.log(b.value([0, 2]));
