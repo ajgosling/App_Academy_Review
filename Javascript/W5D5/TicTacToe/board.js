@@ -38,9 +38,6 @@ class Board {
         return false;
     }
 
-    winner() {
-    }
-
     empty(pos) {
         return this.value(pos) === null;
     }
