@@ -14,8 +14,9 @@ class Board
         return @grid[pos.first][pos.last]
     end
 
-    # def []= (pos, val)
-    # end
+    def []=(pos, val)
+        @grid[pos.first][pos.last] = val
+    end
 
     def render
         puts "! 0 1 2 3"
