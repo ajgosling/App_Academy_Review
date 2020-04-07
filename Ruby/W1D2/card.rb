@@ -1,6 +1,8 @@
 class Card
-    def initialize(value)
-        @value = value
+    VALUES = "ABCDEFGH".chars
+
+    def initialize
+        @value = VALUES.sample
         @revealed = false
     end
 
@@ -13,7 +15,7 @@ class Card
     end
 
     def to_s
-        return @value
+        return @revealed ? @value : 'x'
     end
 
     def ==(other_card)
