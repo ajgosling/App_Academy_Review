@@ -10,6 +10,13 @@ class Board
         @grid = Board.populate
     end
 
+    def [](pos)
+        return @grid[pos.first][pos.last]
+    end
+
+    # def []= (pos, val)
+    # end
+
     def render
         puts "! 0 1 2 3"
 
@@ -19,12 +26,20 @@ class Board
     end
 
     def won?
-        @grid.flatten.none? {|card| card.to_s == 'x'}
+        return @grid.flatten.none? {|card| card.to_s == 'x'}
+    end
+
+    def reveal(pos_arr)
+        # returns value of revealed card
+        return self[pos_arr].reveal
     end
 end
 
 
 b1 = Board.new
 
-# p b1.grid.length
+
+b1.render
+
+b1.reveal([1, 1])
 b1.render

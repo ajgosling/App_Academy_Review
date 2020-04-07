@@ -8,6 +8,7 @@ class Card
 
     def reveal
         @revealed = true
+        return @value
     end
 
     def hide
