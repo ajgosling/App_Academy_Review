@@ -11,19 +11,38 @@ class Game
         until @board.won?
             @board.render
 
-            prompt_move
+            make_guess(prompt_move)
         end
     end
 
-    # def prompt_move
-    #     p "-=-=-=-=-=-=-"
-    #     p "make a guess!"
-    #     return gets.chomp
-    # end
+    def prompt_move
+        p "-=-=-=-=-=-=-"
+        p "make a guess!"
+        guess = gets.chomp
 
-    # def make_guess
-    #     if @previous_guess
+        until valid_guess?(guess)
+            p "-=-=-=-=-=-=-"
+            p "make a guess!"
+            guess = gets.chomp
+        end
+        return guess.split(", ").map {|el| el.to_i}
+    end
 
-    #     end
-    # end
+    def valid_guess?(str)
+        arr = str.split(", ").map {|el| el.to_i}
+        return arr.length == 2 && arr.all? {|num| num >= 0 && num <= 4}
+    end
+
+    def make_guess(pos_arr)
+        if @previous_guess
+
+        else
+            @previous_guess = @board.reveal(pos_arr)
+            @previous_guess = pos_arr
+        end
+    end
 end
+
+g = Game.new
+
+p g.prompt_move

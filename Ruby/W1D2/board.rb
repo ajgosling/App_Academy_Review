@@ -35,12 +35,3 @@ class Board
         return self[pos_arr].reveal
     end
 end
-
-
-b1 = Board.new
-
-
-b1.render
-
-b1.reveal([1, 1])
-b1.render
