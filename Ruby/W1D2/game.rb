@@ -35,9 +35,16 @@ class Game
 
     def make_guess(pos_arr)
         if @previous_guess
-
+            # check if pos_arr is a match
+            @board.reveal(pos_arr)
+            if @board[pos_arr] != @board[@previous_guess]
+                # hide both guesses
+                @board.hide(@previous_guess)
+                @board.hide(pos_arr)
+            end
+            @previous_guess = nil
         else
-            @previous_guess = @board.reveal(pos_arr)
+            @board.reveal(pos_arr)
             @previous_guess = pos_arr
         end
     end
@@ -45,4 +52,4 @@ end
 
 g = Game.new
 
-p g.prompt_move
+p g.play

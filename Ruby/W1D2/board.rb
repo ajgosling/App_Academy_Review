@@ -34,4 +34,7 @@ class Board
         # returns value of revealed card
         return self[pos_arr].reveal
     end
+    def hide(pos_arr)
+        return self[pos_arr].hide
+    end
 end
