@@ -6,6 +6,14 @@ class Tile
         @given = given
 
     end
-end
 
-p String.colors
+    def to_s
+        if @given
+            return @value.to_s.colorize(:light_green)
+        elsif @value
+            return @value.to_s
+        else
+            return " "
+        end
+    end
+end
