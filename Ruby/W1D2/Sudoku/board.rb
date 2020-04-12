@@ -1,14 +1,21 @@
 require_relative 'tile.rb'
 
 class Board
-    def initialize(file_string = "./puzzles/sudoku1.txt")
-        @grid = Board.from_file(file_string)
+    attr_reader :grid
+    def initialize(grid = Board.from_file('./puzzles/sudoku1.txt'))
+        @grid = grid
     end
 
     def Board.from_file(file_string)
         file = File.new(file_string)
         return file.readlines.map do |line|
-            p line.chomp.chars.map(&:to_i)
+            line.chomp.chars.map do |char|
+                if char == '0'
+                    Tile.new(char, false)
+                else
+                    Tile.new(char, true)
+                end
+            end
         end
     end
 
@@ -16,4 +23,6 @@ class Board
     end
 end
 
-Board.from_file('./puzzles/sudoku1.txt')
+b = Board.new
+
+puts b.grid.first
