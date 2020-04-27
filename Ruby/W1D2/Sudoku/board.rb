@@ -29,11 +29,23 @@ class Board
     end
 
     def solved?
-
+        return solved_boxes? && solved_columns? && solved_rows?
     end
 
     def solved_boxes?
+        boxes = [
+            @grid[0][0..2] + @grid[1][0..2] + @grid[2][0..2],
+            @grid[3][0..2] + @grid[4][0..2] + @grid[5][0..2],
+            @grid[6][0..2] + @grid[7][0..2] + @grid[8][0..2],
+            @grid[0][3..5] + @grid[1][3..5] + @grid[2][3..5],
+            @grid[3][3..5] + @grid[4][3..5] + @grid[5][3..5],
+            @grid[6][3..5] + @grid[7][3..5] + @grid[8][3..5],
+            @grid[0][6..8] + @grid[1][6..8] + @grid[2][6..8],
+            @grid[3][6..8] + @grid[4][6..8] + @grid[5][6..8],
+            @grid[6][6..8] + @grid[7][6..8] + @grid[8][6..8]
+        ]
 
+        return boxes.all? {|row| valid_set?(row)}
     end
 
     def solved_columns?
