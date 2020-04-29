@@ -2,7 +2,7 @@ require_relative 'tile.rb'
 
 class Board
     attr_reader :grid
-    def initialize(grid = Board.from_file('./puzzles/sudoku1.txt'))
+    def initialize(grid = Board.from_file('./puzzles/sudoku1_solved.txt'))
         @grid = grid
     end
 
