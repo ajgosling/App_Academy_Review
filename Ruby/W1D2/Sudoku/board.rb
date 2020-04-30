@@ -2,7 +2,7 @@ require_relative 'tile.rb'
 
 class Board
     attr_reader :grid
-    def initialize(grid = Board.from_file('./puzzles/sudoku1_solved.txt'))
+    def initialize(grid = Board.from_file('./puzzles/sudoku1.txt'))
         @grid = grid
     end
 
@@ -17,6 +17,10 @@ class Board
                 end
             end
         end
+    end
+
+    def update_pos(pos_arr, val)
+        @grid[pos_arr[0]][pos_arr[1]].value = val
     end
 
     def render
@@ -69,4 +73,4 @@ end
 
 b = Board.new
 # p b.solved?
-p b.render
+b.render
