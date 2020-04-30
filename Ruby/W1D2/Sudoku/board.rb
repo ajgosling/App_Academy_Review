@@ -68,5 +68,5 @@ class Board
 end
 
 b = Board.new
-p b.solved?
-# p b.render
+# p b.solved?
+p b.render
