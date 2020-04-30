@@ -57,7 +57,7 @@ class Board
     end
 
     def valid_set?(arr)
-        return false unless arr.all? {|el| el >= 1 && el <= 9}
+        return false unless arr.all? {|tile| tile.value >= "1" && tile.value <= "9"}
         return arr.uniq.length == 9
     end
 
@@ -68,5 +68,5 @@ class Board
 end
 
 b = Board.new
-# p Board.format_row([1, 2, 3, 4, 5, 6, 7, 8, 9])
-b.render
+p b.solved?
+# p b.render
