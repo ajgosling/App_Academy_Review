@@ -35,9 +35,12 @@ class Game
     end
 
     def valid_move?(pos_arr)
-        return pos_arr.length == 3 && pos_arr.all? {|num| num >= 0 && num <= 8}
+        return false unless pos_arr.length == 3
+        return false unless pos_arr[0..1].all? {|num| num >= 0 && num <= 8}
+        return pos_arr.last >= 0 && pos_arr.last <= 9
     end
 end
 
+
 g = Game.new
-p g.prompt_move
+g.play

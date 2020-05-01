@@ -1,8 +1,8 @@
 require_relative 'tile.rb'
-
+require 'byebug'
 class Board
     attr_reader :grid
-    def initialize(grid = Board.from_file('./puzzles/sudoku1.txt'))
+    def initialize(grid = Board.from_file('./puzzles/sudoku1_solved.txt'))
         @grid = grid
     end
 
@@ -20,14 +20,19 @@ class Board
     end
 
     def update_pos(pos_arr, val)
-        @grid[pos_arr[0]][pos_arr[1]].value = val
+        # debugger
+        @grid[pos_arr[0]][pos_arr[1]].value = val.to_s
     end
 
+
     def render
+        puts "    0 1 2 3 4 5 6 7 8"
+        puts " "
         @grid.each_with_index do |row, i|
             if i == 3 || i == 6
-                puts "- - - - - - - - -"
+                puts "    - - - - - - - - -"
             end
+            print(i.to_s + "   ")
             puts Board.format_row(row)
         end
     end
@@ -66,11 +71,10 @@ class Board
     end
 
     def Board.format_row(arr)
-        return "#{arr[0..2].join(" ")}|#{arr[0..2].join(" ")}|#{arr[0..2].join(" ")}"
-
+        return "#{arr[0..2].join(" ")}|#{arr[3..5].join(" ")}|#{arr[6..8].join(" ")}"
     end
 end
 
 b = Board.new
 # p b.solved?
-b.render
+# b.render
