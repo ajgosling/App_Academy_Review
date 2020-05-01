@@ -41,6 +41,5 @@ class Game
     end
 end
 
-
 g = Game.new
 g.play
