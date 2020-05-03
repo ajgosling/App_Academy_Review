@@ -50,3 +50,16 @@ end
 # arr2[1] << "hello!"
 # p arr1
 # p arr2
+
+def fibonacci(n)
+    return [0, 1].take(n) if n <= 2
+    prev_fibs = fibonacci(n - 1)
+    return fibonacci << fibonacci[-2] + fibonacci[-1]
+end
+
+p fibonacci(0)
+p fibonacci(1)
+p fibonacci(2)
+p fibonacci(3)
+p fibonacci(7)
+p fibonacci(25)
