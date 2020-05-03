@@ -54,12 +54,81 @@ end
 def fibonacci(n)
     return [0, 1].take(n) if n <= 2
     prev_fibs = fibonacci(n - 1)
-    return fibonacci << fibonacci[-2] + fibonacci[-1]
+    return prev_fibs << prev_fibs[-2] + prev_fibs[-1]
 end
 
-p fibonacci(0)
-p fibonacci(1)
-p fibonacci(2)
-p fibonacci(3)
-p fibonacci(7)
-p fibonacci(25)
+# p fibonacci(0)
+# p fibonacci(1)
+# p fibonacci(2)
+# p fibonacci(3)
+# p fibonacci(7)
+# p fibonacci(25)
+
+def fibonacci_iter(n)
+    return [0, 1].take(n) if n <= 2
+    fibs = [0, 1]
+    until fibs.length == n
+        fibs << fibs[-2] + fibs[-1]
+    end
+    return fibs
+end
+
+# p fibonacci(0)
+# p fibonacci(1)
+# p fibonacci(2)
+# p fibonacci(3)
+# p fibonacci(7)
+# p fibonacci(25)
+
+def bsearch(arr, target)
+    return nil if arr.empty?
+    mid_idx = arr.length / 2 # if length is 1, mid_idx == 0
+
+    case arr[mid_idx] <=> target
+    when -1
+        # middle element less than target, search right half of array
+        next_step = bsearch(arr[mid_idx + 1..-1], target)
+        return next_step ? mid_idx + 1 + next_step : nil
+    when 0
+        # middle element matches target, return idx
+        return mid_idx
+    when 1
+        # middle element greater than target, search left half
+        return bsearch(arr[0...mid_idx], target)
+    end
+end
+
+# p bsearch([1, 2, 3], 1) # => 0
+# p bsearch([2, 3, 4, 5], 3) # => 1
+# p bsearch([2, 4, 6, 8, 10], 6) # => 2
+# p bsearch([1, 3, 4, 5, 9], 5) # => 3
+# p bsearch([1, 2, 3, 4, 5, 6], 6) # => 5
+# p bsearch([1, 2, 3, 4, 5, 6], 0) # => nil
+# p bsearch([1, 2, 3, 4, 5, 7], 6) # => nil
+# p bsearch([1, 2, 3, 4, 5, 7, 7, 8, 9], 7) # => nil
+
+def merge_sort(arr)
+    return arr if arr.length <= 1
+
+    mid = arr.length / 2
+
+    left_half = merge_sort(arr[0...mid])
+    right_half = merge_sort(arr[mid..-1])
+
+    return mergify(left_half, right_half)
+end
+
+def mergify(arr1, arr2)
+    merged_arr = []
+
+    until arr1.empty? || arr2.empty?
+        arr1[0] < arr2[0] ? merged_arr << arr1.shift : merged_arr << arr2.shift
+    end
+
+    return merged_arr + arr1 + arr2
+end
+
+# p merge_sort([5, 3, 9, -1, 2, 4, 3])
+# p merge_sort([])
+# p merge_sort([3])
+# p merge_sort([5, 4])
