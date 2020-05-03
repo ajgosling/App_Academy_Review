@@ -179,3 +179,45 @@ end
 # p permutations([1])
 # p permutations([1, 2])
 # p permutations([1, 2, 3])
+
+def make_greedy_change(total, coins = [10, 7, 1])
+    # sort coins from greatest to smallest
+    # for each value, subtract from total and add to coins_arr as much as possible
+    coins_arr = []
+
+    coins.sort.reverse.each do |coin|
+        until coin > total
+            coins_arr << coin
+            total -= coin
+        end
+    end
+
+    return coins_arr
+end
+
+# p make_greedy_change(14)
+# p make_greedy_change(24)
+# p make_greedy_change(51)
+
+def make_better_change(total, coins = [10, 7, 1])
+    # if remainder equals any value in coins array, return that coin in arr
+
+    return [total] if coins.any? {|coin| coin == total}
+
+    possible_paths = []
+
+    coins.each do |coin|
+        # get make better change with that coin
+        if total >= coin
+            possible_paths << make_better_change(total - coin, coins).unshift(coin)
+        end
+    end
+
+    return possible_paths.sort_by {|path| path.length}.first
+end
+
+# p make_better_change(10)
+# p make_better_change(8)
+# p make_better_change(14)
+# p make_better_change(24)
+# p make_better_change(21)
