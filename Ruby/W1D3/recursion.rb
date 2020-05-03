@@ -132,3 +132,50 @@ end
 # p merge_sort([])
 # p merge_sort([3])
 # p merge_sort([5, 4])
+
+class Array
+    def subsets
+        return [[]] if self.empty?
+
+        prev_subsets = self[0...-1].subsets
+        next_digit = self[-1]
+        return prev_subsets + prev_subsets.map {|arr| arr + [next_digit]}
+    end
+end
+
+# p [].subsets # => [[]]
+# p [1].subsets # => [[], [1]]
+# p [1, 2].subsets # => [[], [1], [2], [1, 2]]
+# p [1, 2, 3].subsets
+
+def permutations(arr)
+    # get all permutations of arr[0...-1]
+    # for each permutation, turn it into adding the next el at every given pos
+
+    return [arr] if arr.length <= 1
+
+    new_permutations = []
+    prev_permutations = permutations(arr[0...-1])
+
+    prev_permutations.each do |perm|
+        new_permutations += permutify(perm, arr[-1])
+    end
+
+    return new_permutations
+end
+
+def permutify(perm, next_digit)
+    new_perms = []
+
+    (perm.length + 1).times do |i|
+        new_perms << perm[0...i] + [next_digit] + perm[i..-1]
+    end
+
+    return new_perms
+end
+
+# p permutify([1, 2], 3)
+# p permutations([])
+# p permutations([1])
+# p permutations([1, 2])
+# p permutations([1, 2, 3])
