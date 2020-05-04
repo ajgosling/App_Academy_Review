@@ -200,24 +200,22 @@ end
 # p make_greedy_change(51)
 
 def make_better_change(total, coins = [10, 7, 1])
-    # if remainder equals any value in coins array, return that coin in arr
+    sorted_coins = coins.sort.reverse
+    coin_routes = []
 
-    return [total] if coins.any? {|coin| coin == total}
+    sorted_coins.each_with_index do |coin, i|
+        return [total] if total == coin
+        next if coin > total
 
-    possible_paths = []
-
-    coins.each do |coin|
-        # get make better change with that coin
-        if total >= coin
-            possible_paths << make_better_change(total - coin, coins).unshift(coin)
-        end
+        new_coins = sorted_coins[i..-1]
+        coin_routes << [coin] + make_better_change(total - coin, new_coins)
     end
 
-    return possible_paths.sort_by {|path| path.length}.first
+    return coin_routes.sort_by {|route| route.length}.first
 end
 
 # p make_better_change(10)
 # p make_better_change(8)
 # p make_better_change(14)
 # p make_better_change(24)
-# p make_better_change(21)
+# p make_better_change(51)
