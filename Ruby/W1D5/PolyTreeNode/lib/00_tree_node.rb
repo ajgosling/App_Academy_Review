@@ -12,10 +12,17 @@ class PolyTreeNode
     end
 
     def parent=(node)
-        # @parent.remove_child(self) if @parent
-        # @parent = node
-        # return if node.nil?
-        # node.add_child(self)
+        if @parent
+            @parent.children.delete(self)
+        end
+        if node.nil?
+            unless @parent.nil?
+                @parent = nil
+            end
+        else
+            @parent = node
+            node.add_child(self)
+        end
     end
 
     def add_child(node)
