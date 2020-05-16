@@ -38,5 +38,21 @@ class PolyTreeNode
             raise "node not child"
         end
     end
+
+    def bfs(target)
+        queue = []
+        @children.each do |child|
+            queue << child
+        end
+
+        until queue.empty?
+            new_node = queue.shift
+            return new_node if new_node.value == target
+            new_node.children.each do |child|
+                queue << child
+            end
+        end
+        return nil
+    end
 end
 
