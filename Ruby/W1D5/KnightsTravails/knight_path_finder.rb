@@ -21,10 +21,21 @@ class KnightPathFinder
 
     def build_move_tree
         @considered_positions = [@root_node.value]
+        queue = [@root_node]
+        until queue.empty?
+        end
+
     end
 
     def new_move_positions(pos)
-        self.valid_moves(pos)
+        possible_moves = KnightPathFinder.valid_moves(pos)
+
+        new_moves = possible_moves.reject do |move|
+            @considered_positions.include?(move)
+        end
+
+        @considered_positions += new_moves
+        return new_moves
     end
 
     def self.valid_moves(pos)
@@ -38,6 +49,4 @@ class KnightPathFinder
 end
 
 kpf = KnightPathFinder.new([0,0])
-
-p kpf.new_move_positions([5, 5])
 
