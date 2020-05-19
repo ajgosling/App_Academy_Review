@@ -23,6 +23,10 @@ class KnightPathFinder
         @considered_positions = [@root_node.value]
     end
 
+    def new_move_positions(pos)
+        self.valid_moves(pos)
+    end
+
     def self.valid_moves(pos)
         valid_moves_arr = []
         POS_CHANGES.each do |dir|
@@ -35,5 +39,5 @@ end
 
 kpf = KnightPathFinder.new([0,0])
 
-p KnightPathFinder.valid_moves([0, 4])
+p kpf.new_move_positions([5, 5])
 
