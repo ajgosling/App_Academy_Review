@@ -12,18 +12,52 @@ POS_CHANGES = [
 ]
 
 class KnightPathFinder
+    attr_reader :root_node
+
     def initialize(start_pos)
         @root_node = PolyTreeNode.new(start_pos)
+        build_move_tree
     end
 
     def find_path(end_pos)
+        return nil unless end_pos.all? {|pos| pos >= 0 && pos <= 7}
+
+        queue = [@root_node]
+
+        until queue.empty?
+            curr_node = queue.shift
+            return trace_back_path(curr_node) if curr_node.value == end_pos
+            queue += curr_node.children
+        end
+
+        return nil
+    end
+
+    def trace_back_path(node)
+        value_list = []
+        until node.nil?
+            value_list.unshift(node.value)
+            node = node.parent
+        end
+
+        return value_list
     end
 
     def build_move_tree
         @considered_positions = [@root_node.value]
         queue = [@root_node]
         until queue.empty?
+            next_node = queue.shift
+            new_moves = new_move_positions(next_node.value)
+            new_moves.each do |move|
+                # make a polytreenode with move as pos
+                new_child = PolyTreeNode.new(move)
+                next_node.add_child(new_child)
+                queue << new_child
+            end
         end
+
+        return @root_node
 
     end
 
@@ -50,3 +84,4 @@ end
 
 kpf = KnightPathFinder.new([0,0])
 
+p kpf.find_path([7, 6])

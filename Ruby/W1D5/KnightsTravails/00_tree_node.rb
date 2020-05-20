@@ -8,7 +8,8 @@ class PolyTreeNode
     end
 
     def inspect
-        {value: @value, parent: @parent}
+        # {value: @value, children: @children}
+        @value
     end
 
     def parent=(node)
