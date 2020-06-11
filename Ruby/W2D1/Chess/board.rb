@@ -4,11 +4,8 @@ class Board
     attr_accessor :rows
     def initialize
         # we want to put null pieces in grid eventually
-        @rows = []
+        @rows = generate_rows
 
-        2.times { @rows << generate_piece_row("white") }
-        4.times { @rows << generate_empty_row }
-        2.times { @rows << generate_piece_row("black") }
     end
 
     def move_piece(start_pos, end_pos)
@@ -16,6 +13,10 @@ class Board
         raise "invalid end position!" unless valid_pos?(end_pos)
         raise "no piece at starting position!" if self[start_pos].nil?
         # raise "can't move to occupied position!" if self[start_pos].nil?
+
+        # move piece if valid move
+        self[end_pos] = self[start_pos]
+        self[start_pos] = nil
     end
 
     def valid_pos?(pos)
@@ -30,8 +31,23 @@ class Board
         @rows[pos.first][pos.last] = val
     end
 
-    def generate_piece_row(color)
-        return Array.new(8, Piece.new(color))
+    def generate_rows
+        # we want 2 rows of 8 pieces, color board / pos
+        rows = []
+
+        2.times { |time| rows << generate_piece_row("white", time) }
+        4.times { rows << generate_empty_row }
+        2.times { |time| rows << generate_piece_row("black", time + 6) }
+
+        rows
+    end
+
+    def generate_piece_row(color, idx)
+        row = []
+
+        8.times {|time| row << Piece.new(color, self, [idx, time])}
+
+        row
     end
 
     def generate_empty_row
@@ -39,12 +55,13 @@ class Board
     end
 
     def inspect
-        @rows
+        @rows.reverse
+    end
+
+    def empty?
+        return false
     end
 end
 
-
 b = Board.new
-
-p b.valid_pos?([4, 8])
-
+p b[[0, 2]].board
