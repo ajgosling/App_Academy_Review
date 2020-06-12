@@ -2,7 +2,13 @@ require_relative 'piece'
 require_relative 'stepable'
 
 class Knight < Piece
+    include Stepable
+
     def to_s
+        'H'
+    end
+
+    def inspect
         'H'
     end
     def move_diffs

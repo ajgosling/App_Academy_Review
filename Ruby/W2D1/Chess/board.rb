@@ -1,4 +1,4 @@
-require_relative 'Pieces/piece'
+require_relative 'pieces'
 
 class Board
     attr_accessor :rows
@@ -49,7 +49,7 @@ class Board
     def generate_piece_row(color, idx)
         row = []
 
-        8.times {|time| row << Piece.new(color, self, [idx, time])}
+        8.times {|time| row << Knight.new(color, self, [idx, time])}
 
         row
     end
@@ -58,10 +58,18 @@ class Board
         return Array.new(8, nil)
     end
 
-    def inspect
-        @rows.reverse
+    # def inspect
+    #     @rows.reverse
+    # end
+
+    def display
+        @rows.reverse.each {|row| puts row.join(" ")}
     end
 end
 
 b = Board.new
-p b
+
+
+b.display
+b.move_piece([1, 0], [5, 4])
+b.display

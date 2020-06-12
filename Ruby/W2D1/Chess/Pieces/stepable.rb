@@ -9,9 +9,10 @@ module Stepable
             # move must be on screen
             next unless @board.valid_pos?(poss_pos)
             # end idx must not be own color
-            next if @color == @board[poss_pos].color
+            unless @board.empty?(poss_pos)
+                next if @color == @board[poss_pos].color
+            end
 
-            next unless @board[poss_pos].empty?
 
             moves_arr << poss_pos
         end
