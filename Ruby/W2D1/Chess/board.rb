@@ -1,4 +1,4 @@
-require_relative 'piece'
+require_relative 'Pieces/piece'
 
 class Board
     attr_accessor :rows
@@ -11,7 +11,7 @@ class Board
     def move_piece(start_pos, end_pos)
         raise "invalid start position!" unless valid_pos?(start_pos)
         raise "invalid end position!" unless valid_pos?(end_pos)
-        raise "no piece at starting position!" if self[start_pos].nil?
+        raise "no piece at starting position!" if empty?(start_pos)
         # raise "can't move to occupied position!" if self[start_pos].nil?
 
         # move piece if valid move
@@ -21,6 +21,10 @@ class Board
 
     def valid_pos?(pos)
         pos.all? {|num| num >= 0 && num <= 7}
+    end
+
+    def empty?(pos)
+        self[pos].nil?
     end
 
     def [](pos)
@@ -57,11 +61,7 @@ class Board
     def inspect
         @rows.reverse
     end
-
-    def empty?
-        return false
-    end
 end
 
 b = Board.new
-p b[[0, 2]].board
+p b
