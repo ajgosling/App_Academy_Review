@@ -13,4 +13,8 @@ class Piece
     def to_s
         @color[0]
     end
+
+    def empty?
+        false
+    end
 end

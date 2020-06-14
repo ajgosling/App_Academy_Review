@@ -9,6 +9,7 @@ module Stepable
             # move must be on screen
             next unless @board.valid_pos?(poss_pos)
             # end idx must not be own color
+            debugger
             unless @board.empty?(poss_pos)
                 next if @color == @board[poss_pos].color
             end

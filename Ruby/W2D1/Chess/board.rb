@@ -1,22 +1,25 @@
 require_relative 'pieces'
+require 'byebug'
 
 class Board
-    attr_accessor :rows
+    attr_accessor :rows, :null_piece
+
     def initialize
         # we want to put null pieces in grid eventually
         @rows = generate_rows
 
+        @null_piece = NullPiece.instance
     end
 
     def move_piece(start_pos, end_pos)
         raise "invalid start position!" unless valid_pos?(start_pos)
         raise "invalid end position!" unless valid_pos?(end_pos)
         raise "no piece at starting position!" if empty?(start_pos)
-        # raise "can't move to occupied position!" if self[start_pos].nil?
-
+        unless self[start_pos].moves.include?(end_pos)
+            raise "piece doesn't move that way!"
+        end
         # move piece if valid move
-        self[end_pos] = self[start_pos]
-        self[start_pos] = nil
+        self[start_pos], self[end_pos] = @null_piece, self[start_pos]
     end
 
     def valid_pos?(pos)
@@ -24,7 +27,7 @@ class Board
     end
 
     def empty?(pos)
-        self[pos].nil?
+        self[pos].empty?
     end
 
     def [](pos)
@@ -55,7 +58,7 @@ class Board
     end
 
     def generate_empty_row
-        return Array.new(8, nil)
+        return Array.new(8, @null_piece)
     end
 
     # def inspect
@@ -71,5 +74,10 @@ b = Board.new
 
 
 b.display
-b.move_piece([1, 0], [5, 4])
-b.display
+p b[[2, 2]]
+p b.generate_empty_row.first
+# b.move_piece([1, 0], [5, 4])
+# b.display
+
+
+# p b.null_piece.empty?
