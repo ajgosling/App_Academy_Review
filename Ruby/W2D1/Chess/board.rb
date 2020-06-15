@@ -6,9 +6,11 @@ class Board
 
     def initialize
         # we want to put null pieces in grid eventually
-        @rows = generate_rows
 
         @null_piece = NullPiece.instance
+
+        @rows = generate_rows
+
     end
 
     def move_piece(start_pos, end_pos)
@@ -63,7 +65,7 @@ class Board
 
     # def inspect
     #     @rows.reverse
-    # end
+# end
 
     def display
         @rows.reverse.each {|row| puts row.join(" ")}
@@ -73,11 +75,13 @@ end
 b = Board.new
 
 
-b.display
-p b[[2, 2]]
-p b.generate_empty_row.first
-# b.move_piece([1, 0], [5, 4])
+p b[[1, 2]].moves
+# b.display
+# b.move_piece([1, 0], [3, 1])
 # b.display
 
+# n = NullPiece.instance
+# b = NullPiece.instance
+# p n == b
 
 # p b.null_piece.empty?
