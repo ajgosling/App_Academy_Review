@@ -54,7 +54,7 @@ class Board
     def generate_piece_row(color, idx)
         row = []
 
-        8.times {|time| row << Knight.new(color, self, [idx, time])}
+        8.times {|time| row << Rook.new(color, self, [idx, time])}
 
         row
     end
@@ -75,10 +75,10 @@ end
 b = Board.new
 
 
-p b[[1, 2]].moves
-# b.display
-# b.move_piece([1, 0], [3, 1])
-# b.display
+# p b[[1, 2]].moves
+b.display
+b.move_piece([1, 0], [3, 1])
+b.display
 
 # n = NullPiece.instance
 # b = NullPiece.instance
