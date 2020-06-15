@@ -52,10 +52,17 @@ class Board
         rows
     end
 
-    def generate_piece_row(color, idx)
+    def generate_piece_row(color, row)
+        # 8.times {|time| row << Queen.new(color, self, [idx, time])}
+        pieces = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+
+        pieces.map.with_index { |c, i| c.new(color, self, [row, i]) }
+    end
+
+    def generate_pawn_row(color, row)
         row = []
 
-        8.times {|time| row << Queen.new(color, self, [idx, time])}
+        8.times {|i| row << Pawn.new(color, self, [row, i])}
 
         row
     end
