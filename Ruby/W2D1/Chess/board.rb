@@ -22,6 +22,7 @@ class Board
         end
         # move piece if valid move
         self[start_pos], self[end_pos] = @null_piece, self[start_pos]
+        self[end_pos].pos = end_pos
     end
 
     def valid_pos?(pos)
@@ -75,7 +76,7 @@ p b[[1, 2]].moves
 b.display
 b.move_piece([1, 2], [2, 2])
 b.display
-# p b[[2, 2]].moves
+p b[[2, 2]].moves
 
 
 # n = NullPiece.instance
