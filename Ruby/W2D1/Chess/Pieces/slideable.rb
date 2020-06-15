@@ -41,16 +41,28 @@ module Slideable
                 # we move off the board
                 # we hit a piece of the same color (break)
                 # we hit a piece of the opposite color (add that slot)
+        moves_arr = []
 
         move_dirs.each do |dir|
-            p @pos
-            p dir
-            new_pos = [@pos.first + dir.first, @pos.last + dir.last]
-            while true
-                p new_pos
-                break
+            curr_pos = [@pos.first + dir.first, @pos.last + dir.last]
+            while @board.valid_pos?(curr_pos)
+                pos_piece = @board[curr_pos]
+                if pos_piece.empty?
+                    moves_arr << curr_pos
+                elsif @board[curr_pos].color == @color
+                    break
+                else
+                    # we can take opposite color piece and then stop
+                    moves_arr << curr_pos
+                    break
+                end
+
+                curr_pos = [curr_pos.first + dir.first, curr_pos.last + dir.last]
+
             end
         end
+
+        return moves_arr
 
     end
 end

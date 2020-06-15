@@ -63,10 +63,6 @@ class Board
         return Array.new(8, @null_piece)
     end
 
-    # def inspect
-    #     @rows.reverse
-# end
-
     def display
         @rows.reverse.each {|row| puts row.join(" ")}
     end
@@ -76,6 +72,11 @@ b = Board.new
 
 
 p b[[1, 2]].moves
+b.display
+b.move_piece([1, 2], [2, 2])
+b.display
+# p b[[2, 2]].moves
+
 
 # n = NullPiece.instance
 # b = NullPiece.instance
