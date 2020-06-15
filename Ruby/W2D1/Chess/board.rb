@@ -75,10 +75,7 @@ end
 b = Board.new
 
 
-# p b[[1, 2]].moves
-b.display
-b.move_piece([1, 0], [3, 1])
-b.display
+p b[[1, 2]].moves
 
 # n = NullPiece.instance
 # b = NullPiece.instance

@@ -35,6 +35,22 @@ module Slideable
     # end
 
     def moves
-        p move_dirs
+        # iterate over move_dirs
+        # with each dir, extend in that direction for as long as we have valid move
+            # a move becomes invalid if:
+                # we move off the board
+                # we hit a piece of the same color (break)
+                # we hit a piece of the opposite color (add that slot)
+
+        move_dirs.each do |dir|
+            p @pos
+            p dir
+            new_pos = [@pos.first + dir.first, @pos.last + dir.last]
+            while true
+                p new_pos
+                break
+            end
+        end
+
     end
 end
