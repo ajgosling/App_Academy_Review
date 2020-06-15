@@ -78,7 +78,7 @@ p b[[1, 2]].moves
 b.display
 b.move_piece([1, 2], [2, 3])
 b.display
-p b[[2, 3]].moves
+p b[[2, 3]].color
 
 
 # n = NullPiece.instance
