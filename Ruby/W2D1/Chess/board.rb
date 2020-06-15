@@ -55,7 +55,7 @@ class Board
     def generate_piece_row(color, idx)
         row = []
 
-        8.times {|time| row << Rook.new(color, self, [idx, time])}
+        8.times {|time| row << Queen.new(color, self, [idx, time])}
 
         row
     end
@@ -65,7 +65,9 @@ class Board
     end
 
     def display
-        @rows.reverse.each {|row| puts row.join(" ")}
+        puts "    a b c d e f g h"
+        puts "  X ---------------"
+        @rows.reverse.each_with_index {|row, i| puts "#{i} | #{row.join(" ")}"}
     end
 end
 
@@ -74,9 +76,9 @@ b = Board.new
 
 p b[[1, 2]].moves
 b.display
-b.move_piece([1, 2], [2, 2])
+b.move_piece([1, 2], [2, 3])
 b.display
-p b[[2, 2]].moves
+p b[[2, 3]].moves
 
 
 # n = NullPiece.instance
