@@ -1,5 +1,6 @@
 require_relative 'pieces'
 require 'byebug'
+require 'colorize'
 
 class Board
     attr_accessor :rows, :null_piece
@@ -10,7 +11,6 @@ class Board
         @null_piece = NullPiece.instance
 
         @rows = generate_rows
-
     end
 
     def move_piece(start_pos, end_pos)
@@ -45,21 +45,25 @@ class Board
         # we want 2 rows of 8 pieces, color board / pos
         rows = []
 
-        2.times { |time| rows << generate_piece_row("white", time) }
+        rows << generate_piece_row("white")
+        rows << generate_pawn_row("white")
         4.times { rows << generate_empty_row }
-        2.times { |time| rows << generate_piece_row("black", time + 6) }
+        rows << generate_pawn_row("black")
+        rows << generate_piece_row("black")
 
         rows
     end
 
-    def generate_piece_row(color, row)
-        # 8.times {|time| row << Queen.new(color, self, [idx, time])}
+    def generate_piece_row(color)
+        row = color == "white" ? 0 : 7
         pieces = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+
 
         pieces.map.with_index { |c, i| c.new(color, self, [row, i]) }
     end
 
-    def generate_pawn_row(color, row)
+    def generate_pawn_row(color)
+        row = color == "white" ? 1 : 6
         row = []
 
         8.times {|i| row << Pawn.new(color, self, [row, i])}
@@ -72,6 +76,7 @@ class Board
     end
 
     def display
+
         puts "    a b c d e f g h"
         puts "  X ---------------"
         @rows.reverse.each_with_index {|row, i| puts "#{i} | #{row.join(" ")}"}
@@ -81,11 +86,13 @@ end
 b = Board.new
 
 
-p b[[1, 2]].moves
+# p b[[1, 2]].my_moves
 b.display
-b.move_piece([1, 2], [2, 3])
-b.display
-p b[[2, 3]].color
+puts b[[1, 2]]
+puts b[[2, 3]]
+# b.move_piece([1, 2], [2, 3])
+# b.display
+# p b[[2, 3]].color
 
 
 # n = NullPiece.instance

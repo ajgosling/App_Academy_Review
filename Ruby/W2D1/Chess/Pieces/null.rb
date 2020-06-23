@@ -6,11 +6,11 @@ class NullPiece < Piece
     end
 
     def to_s
-        ' '
+        'n'
     end
 
     def inspect
-        ' '
+        'n'
     end
 
     def moves

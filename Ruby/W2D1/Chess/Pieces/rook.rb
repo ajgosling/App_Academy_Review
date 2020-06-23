@@ -5,7 +5,7 @@ class Rook < Piece
     include Slideable
 
     def to_s
-        'R'
+        '♜'.colorize(color)
     end
 
     def inspect

@@ -5,11 +5,11 @@ class King < Piece
     include Stepable
 
     def to_s
-        'K'
+        '♚'.colorize(color)
     end
 
     def inspect
-        'K'
+        '♚'.colorize(color)
     end
 
     def move_diffs

@@ -17,4 +17,9 @@ class Piece
     def empty?
         false
     end
+
+    def my_moves
+        letters = "abcdefgh"
+        self.moves.map {|move| letters[move.first] + move.last.to_s}
+    end
 end

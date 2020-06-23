@@ -5,7 +5,7 @@ class Bishop < Piece
     include Slideable
 
     def to_s
-        'B'
+        '♝'.colorize(color)
     end
 
     def inspect

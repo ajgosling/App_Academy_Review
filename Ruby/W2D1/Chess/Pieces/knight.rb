@@ -5,7 +5,7 @@ class Knight < Piece
     include Stepable
 
     def to_s
-        'H'
+        '♞'.colorize(color)
     end
 
     def inspect
