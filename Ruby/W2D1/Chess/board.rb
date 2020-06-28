@@ -74,37 +74,4 @@ class Board
     def generate_empty_row
         return Array.new(8, @null_piece)
     end
-
-    def display
-
-        letters = "hgfedcba"
-        puts "    1 2 3 4 5 6 7 8"
-        puts "  X ---------------"
-        @rows.reverse.each_with_index {|row, i| puts "#{letters[i]} | #{row.join(" ")}"}
-    end
 end
-
-b = Board.new
-
-
-# p b[[1, 2]].my_moves
-b.display
-p b[[1, 2]].moves
-b.move_piece([1, 2], [3, 2])
-b.move_piece([3, 2], [4, 2])
-# b.move_piece([4, 2], [5, 2])
-b.move_piece([6, 3], [5, 3])
-
-b.display
-
-# puts b[[2, 3]]
-# b.move_piece([1, 2], [2, 3])
-# b.display
-# p b[[2, 3]].color
-
-
-# n = NullPiece.instance
-# b = NullPiece.instance
-# p n == b
-
-# p b.null_piece.empty?
