@@ -63,10 +63,10 @@ class Board
     end
 
     def generate_pawn_row(color)
-        row = color == "white" ? 1 : 6
+        row_idx = color == "white" ? 1 : 6
         row = []
 
-        8.times {|i| row << Pawn.new(color, self, [row, i])}
+        8.times {|i| row << Pawn.new(color, self, [row_idx, i])}
 
         row
     end
@@ -77,9 +77,10 @@ class Board
 
     def display
 
-        puts "    a b c d e f g h"
+        letters = "hgfedcba"
+        puts "    1 2 3 4 5 6 7 8"
         puts "  X ---------------"
-        @rows.reverse.each_with_index {|row, i| puts "#{i} | #{row.join(" ")}"}
+        @rows.reverse.each_with_index {|row, i| puts "#{letters[i]} | #{row.join(" ")}"}
     end
 end
 
@@ -88,8 +89,15 @@ b = Board.new
 
 # p b[[1, 2]].my_moves
 b.display
-puts b[[1, 2]]
-puts b[[2, 3]]
+p b[[1, 2]].moves
+b.move_piece([1, 2], [3, 2])
+b.move_piece([3, 2], [4, 2])
+# b.move_piece([4, 2], [5, 2])
+b.move_piece([6, 3], [5, 3])
+
+b.display
+
+# puts b[[2, 3]]
 # b.move_piece([1, 2], [2, 3])
 # b.display
 # p b[[2, 3]].color
