@@ -11,31 +11,24 @@ class Game
     def render
         @display.render
     end
+
+    def play
+        system('clear')
+
+        while true
+            system('clear')
+            @display.render
+            @display.cursor.get_input
+            p @display.cursor.cursor_pos
+        end
+    end
 end
 g = Game.new
 
 
 
-# p b[[1, 2]].my_moves
 
-# arr = []
-# arr << "red".colorize(:red).on_blue
-# arr << "blue".colorize(:blue).on_red
-# puts arr.join(' ')
-# puts "This is red on blue and underline".colorize(:red).on_blue.underline
 g.render
-# p g.board[[1, 2]].moves
-# g.board.move_piece([1, 2], [3, 2])
-# g.board.move_piece([3, 2], [4, 2])
-# g.board.move_piece([4, 2], [5, 2])
-# g.board.move_piece([6, 3], [5, 3])
-
-# g.board.display
+g.play
 
 
-
-# n = NullPiece.instance
-# b = NullPiece.instance
-# p n == b
-
-# p b.null_piece.empty?

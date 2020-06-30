@@ -14,13 +14,14 @@ KEYMAP = {
   "\r" => :return,
   "\n" => :newline,
   "\e" => :escape,
-  "\e[A" => :up,
-  "\e[B" => :down,
-  "\e[C" => :right,
-  "\e[D" => :left,
+  "\eOA" => :up,
+  "\eOB" => :down,
+  "\eOC" => :right,
+  "\eOD" => :left,
   "\177" => :backspace,
   "\004" => :delete,
   "\u0003" => :ctrl_c,
+  "\u001A" => :ctrl_c,
 }
 
 MOVES = {
@@ -32,15 +33,17 @@ MOVES = {
 
 class Cursor
 
-  attr_reader :cursor_pos, :board
+  attr_reader :cursor_pos, :board, :selected
 
   def initialize(cursor_pos, board)
     @cursor_pos = cursor_pos
     @board = board
+    @selected = false
   end
 
   def get_input
-    key = KEYMAP[read_char]
+    key = KEYMAP[p read_char]
+    p key
     handle_key(key)
   end
 
@@ -75,11 +78,13 @@ class Cursor
     return input
   end
 
-	def handle_key(key)
+  def handle_key(key)
 		case key
-		when :space
+    when :space
+      @selected = !@selected
 			return @cursor_pos
 		when :return
+      @selected = !@selected
 			return @cursor_pos
 		when :up
 			update_pos(MOVES[key])
@@ -87,15 +92,15 @@ class Cursor
 			update_pos(MOVES[key])
 		when :left
 			update_pos(MOVES[key])
-		when :right
+    when :right
 			update_pos(MOVES[key])
 		when :ctrl_c
-			Process.exit!(0)
+      Process.exit!(0)
 		end
   end
 
 	def update_pos(diff)
-		new_pos = [@cursor_pos.first += diff.first, @cursor_pos.last += diff.last]
+		new_pos = [@cursor_pos.first + diff.first, @cursor_pos.last + diff.last]
 
 		@cursor_pos = new_pos if @board.valid_pos?(new_pos)
 

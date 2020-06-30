@@ -11,7 +11,7 @@ class Pawn < Piece
     end
 
     def at_start_row?
-        return @color == :white ? @pos.first == 1 : @pos.first == 6
+        return @color == :white ? @pos.first == 6 : @pos.first == 1
     end
 
     def moves
@@ -19,7 +19,7 @@ class Pawn < Piece
     end
 
     def forward_dir
-        return @color == :white ? 1 : -1
+        return @color == :white ? -1 : 1
     end
 
     def forward_steps

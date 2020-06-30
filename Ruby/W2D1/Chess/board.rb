@@ -45,17 +45,17 @@ class Board
         # we want 2 rows of 8 pieces, color board / pos
         rows = []
 
-        rows << generate_piece_row(:white)
-        rows << generate_pawn_row(:white)
-        4.times { rows << generate_empty_row }
-        rows << generate_pawn_row(:black)
         rows << generate_piece_row(:black)
+        rows << generate_pawn_row(:black)
+        4.times { rows << generate_empty_row }
+        rows << generate_pawn_row(:white)
+        rows << generate_piece_row(:white)
 
         rows
     end
 
     def generate_piece_row(color)
-        row = color == :white ? 0 : 7
+        row = color == :white ? 7 : 0
         pieces = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
 
 
@@ -63,7 +63,7 @@ class Board
     end
 
     def generate_pawn_row(color)
-        row_idx = color == :white ? 1 : 6
+        row_idx = color == :white ? 6 : 1
         row = []
 
         8.times {|i| row << Pawn.new(color, self, [row_idx, i])}
