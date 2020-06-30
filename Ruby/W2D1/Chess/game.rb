@@ -17,6 +17,12 @@ g = Game.new
 
 
 # p b[[1, 2]].my_moves
+
+# arr = []
+# arr << "red".colorize(:red).on_blue
+# arr << "blue".colorize(:blue).on_red
+# puts arr.join(' ')
+# puts "This is red on blue and underline".colorize(:red).on_blue.underline
 g.render
 # p g.board[[1, 2]].moves
 # g.board.move_piece([1, 2], [3, 2])

@@ -11,7 +11,7 @@ class Pawn < Piece
     end
 
     def at_start_row?
-        return @color == "white" ? @pos.first == 1 : @pos.first == 6
+        return @color == :white ? @pos.first == 1 : @pos.first == 6
     end
 
     def moves
@@ -19,7 +19,7 @@ class Pawn < Piece
     end
 
     def forward_dir
-        return @color == "white" ? 1 : -1
+        return @color == :white ? 1 : -1
     end
 
     def forward_steps
@@ -48,10 +48,10 @@ class Pawn < Piece
         poss_moves = [pos_left, pos_right].select {|el| @board.valid_pos?(el)}
         # poss_moves.select {|el| @board[el].color == @color}
         poss_moves.select! do |el|
-            if @color == "white"
-                @board[el].color == "black"
+            if @color == :white
+                @board[el].color == :black
             else
-                @board[el].color == "white"
+                @board[el].color == :white
             end
         end
 

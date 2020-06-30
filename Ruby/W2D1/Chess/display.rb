@@ -23,16 +23,55 @@ class Display
         end
     end
 
-    def render_even_row(row)
-        row = ''
-        row.each do |el|
-
+    def render_even_empty_row
+        new_row = ''
+        4.times do
+            new_row += '   '.colorize(:blue).on_red
+            new_row += '   '.colorize(:red).on_blue
         end
+        puts new_row
+    end
+
+    def render_odd_empty_row
+        new_row = ''
+        4.times do
+            new_row += '   '.colorize(:red).on_blue
+            new_row += '   '.colorize(:blue).on_red
+        end
+        puts new_row
+    end
+
+    def render_even_row(row)
+        render_even_empty_row
+
+        new_row = ''
+
+        4.times do |i|
+            p1 = row[i * 2]
+            p2 = row[i * 2 + 1]
+            new_row += " #{p1} ".colorize(p1.color).on_red
+            new_row += " #{p2} ".colorize(p2.color).on_blue
+        end
+        puts new_row
+
+        # render_even_empty_row
     end
 
     def render_odd_row(row)
-        puts row.join(' ')
+        render_odd_empty_row
+        new_row = ''
+
+        4.times do |i|
+            p1 = row[i * 2]
+            p2 = row[i * 2 + 1]
+            new_row += " #{p1} ".colorize(p1.color).on_blue
+            new_row += " #{p2} ".colorize(p2.color).on_red
+        end
+        puts new_row
+
+        # render_odd_empty_row
     end
+
 end
 
 # puts "This is blue".colorize(:blue)
