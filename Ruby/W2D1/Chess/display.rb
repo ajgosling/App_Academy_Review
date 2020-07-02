@@ -13,15 +13,24 @@ class Display
         color_flag = true
 
         print_row = []
+        if @cursor.selected
+            selected_moves = @board[@cursor.selected].moves
+        else
+            selected_moves = []
+        end
 
         @board.rows.each_with_index do |row, i|
             row.each_with_index do |piece, j|
-                if @cursor.cursor_pos == [i, j]
-                    if @cursor.selected
-                        print_row << " #{piece} ".colorize(piece.color).on_light_white
-                    else
-                        print_row << " #{piece} ".colorize(piece.color).on_magenta
-                    end
+                # light selected square
+                if @cursor.selected == [i, j]
+                    print_row << " #{piece} ".colorize(piece.color).on_red
+                # light square that cursor is on
+                elsif @cursor.cursor_pos == [i, j]
+                    print_row << " #{piece} ".colorize(piece.color).on_magenta
+                # light squares that selected piece can move to
+                elsif selected_moves.include?([i, j])
+                    print_row << " #{piece} ".colorize(piece.color).on_white
+                # alternate colors
                 elsif color_flag
                     print_row << " #{piece} ".colorize(piece.color).on_blue
                 else

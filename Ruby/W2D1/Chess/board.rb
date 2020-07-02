@@ -13,6 +13,36 @@ class Board
         @rows = generate_rows
     end
 
+    def find_king(color)
+        @rows.each_with_index do |row, i|
+            row.each_with_index do |piece, j|
+                if piece.is_a?(King) && piece.color == color
+                    return [i, j]
+                end
+            end
+        end
+    end
+
+    def in_check?(color)
+        king_pos = find_king(color)
+
+        @rows.flatten.any? do |piece|
+            piece.color == opp_color(color) && piece.moves.include?(king_pos)
+        end
+    end
+
+    def valid_moves(color)
+        return []
+    end
+
+    def checkmate?(color)
+        in_check?(color) && valid_moves(color).empty?
+    end
+
+    def opp_color(color)
+        return color == :white ? :black : :white
+    end
+
     def move_piece(start_pos, end_pos)
         raise "invalid start position!" unless valid_pos?(start_pos)
         raise "invalid end position!" unless valid_pos?(end_pos)
@@ -74,4 +104,5 @@ class Board
     def generate_empty_row
         return Array.new(8, @null_piece)
     end
+
 end

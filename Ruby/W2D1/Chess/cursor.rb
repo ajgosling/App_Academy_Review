@@ -42,8 +42,7 @@ class Cursor
   end
 
   def get_input
-    key = KEYMAP[p read_char]
-    p key
+    key = KEYMAP[read_char]
     handle_key(key)
   end
 
@@ -81,10 +80,10 @@ class Cursor
   def handle_key(key)
 		case key
     when :space
-      @selected = !@selected
+      toggle_selected!
 			return @cursor_pos
 		when :return
-      @selected = !@selected
+      toggle_selected!
 			return @cursor_pos
 		when :up
 			update_pos(MOVES[key])
@@ -97,6 +96,14 @@ class Cursor
 		when :ctrl_c
       Process.exit!(0)
 		end
+  end
+
+  def toggle_selected!
+    if @selected
+      @selected = false
+    else
+      @selected = @cursor_pos
+    end
   end
 
 	def update_pos(diff)
