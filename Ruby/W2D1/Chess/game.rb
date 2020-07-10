@@ -23,16 +23,21 @@ class Game
         end
     end
 end
+
+
+# f2, f3
+# e7, e5
+# g2, g4
+# d8, h4
 g = Game.new
 
-
-
-
-g.board.move_piece([7, 1], [5, 2])
-g.board.move_piece([5, 2], [3, 1])
-g.board.move_piece([3, 1], [1, 2])
-p g.board.in_check?(:white)
+g.board.move_piece([1, 5], [2, 5])
+g.board.move_piece([6, 4], [4, 4])
+g.board.move_piece([1, 6], [3, 6])
+g.board.move_piece([7, 3], [3, 7])
 g.render
+
+p g.board.checkmate?(:white)
 # g.play
 
 

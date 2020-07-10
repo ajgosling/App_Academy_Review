@@ -13,6 +13,9 @@ class Board
         @rows = generate_rows
     end
 
+    def dup
+    end
+
     def find_king(color)
         @rows.each_with_index do |row, i|
             row.each_with_index do |piece, j|
