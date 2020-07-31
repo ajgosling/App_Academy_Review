@@ -21,15 +21,41 @@ end
 # this is O of n
 
 def largest_contiguous_subsum(arr)
+    i = 0
+    subs = []
+    while i < arr.length
+        j = i
+
+        while j < arr.length
+            subs << arr[i..j]
+
+            j += 1
+        end
+
+        i += 1
+    end
+
+
+    return (subs.max {|a, b| a.sum <=> b.sum}).sum
+
 end
 
-list = [5, 3, -7]
-largest_contiguous_subsum(list) # => 8
+def largest_contig_sum2(arr)
+    running_sum = 0
+    max_sum = arr[0]
 
-# possible sub-sums
-[5]           # => 5
-[5, 3]        # => 8 --> we want this one
-[5, 3, -7]    # => 1
-[3]           # => 3
-[3, -7]       # => -4
-[-7]          # => -7
+    arr.each do |num|
+        running_sum += num
+
+        if running_sum > max_sum
+            max_sum = running_sum
+        end
+
+        if running_sum < 0
+            running_sum = 0
+        end
+    end
+end
+
+arr = [5, 3, -7]
+p largest_contiguous_subsum(arr)
