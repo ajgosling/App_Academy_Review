@@ -1,4 +1,5 @@
 class MaxIntSet
+  attr_reader :store
   def initialize(max)
     @max = max
     @store = Array.new(max + 1, false)
@@ -8,7 +9,7 @@ class MaxIntSet
 # The size of the array will remain constant!
 # The MaxIntSet should raise an error if someone tries to insert, remove, or check inclusion of a number that is out of bounds.
   def insert(num)
-    raise "outside range" unless is_valid?(num)
+    raise "Out of bounds" unless is_valid?(num)
     @store[num] = true
   end
 
@@ -84,7 +85,7 @@ class ResizingIntSet
   end
 
   def remove(num)
-    self[num].delete(num)
+    @count -= 1 if self[num].delete(num)
   end
 
   def include?(num)
