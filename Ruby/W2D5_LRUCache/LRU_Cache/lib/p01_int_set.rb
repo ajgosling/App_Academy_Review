@@ -68,24 +68,23 @@ end
 class ResizingIntSet
   attr_reader :count
 
-  def initialize(num_buckets = 20)
+  def initialize(num_buckets = 4)
     @store = Array.new(num_buckets) { Array.new }
     @count = 0
   end
 
   def insert(num)
     return if include?(num)
+    @count += 1
 
-    if @count == num_buckets
-      resize!
-    end
+    resize! if @count == num_buckets
 
     self[num] << num
-
 
   end
 
   def remove(num)
+    self[num].delete(num)
   end
 
   def include?(num)
@@ -104,5 +103,20 @@ class ResizingIntSet
   end
 
   def resize!
+    new_store = Array.new(num_buckets * 2) { Array.new }
+
+    @store.flatten.each do |num|
+      new_store[num % new_store.length] << num
+    end
+
+    @store = new_store
   end
 end
+
+n = ResizingIntSet.new
+n.insert(5)
+n.insert(6)
+n.insert(27)
+n.insert(30)
+n.insert(74)
+p n
