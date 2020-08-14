@@ -8,14 +8,19 @@ class MaxIntSet
 # The size of the array will remain constant!
 # The MaxIntSet should raise an error if someone tries to insert, remove, or check inclusion of a number that is out of bounds.
   def insert(num)
-    raise unless is_valid?(num)
+    raise "outside range" unless is_valid?(num)
     @store[num] = true
   end
 
   def remove(num)
+    raise "outside range" unless is_valid?(num)
+    @store[num] = false
   end
 
   def include?(num)
+    raise "outside range" unless is_valid?(num)
+
+    @store[num]
   end
 
   private
@@ -35,18 +40,22 @@ class IntSet
   end
 
   def insert(num)
+    self[num] << num unless self.include?(num)
   end
 
   def remove(num)
+    self[num].delete(num)
   end
 
   def include?(num)
+    self[num].include?(num)
   end
 
   private
 
   def [](num)
     # optional but useful; return the bucket corresponding to `num`
+    @store[num % num_buckets]
   end
 
   def num_buckets
@@ -55,11 +64,6 @@ class IntSet
 end
 
 
-m = MaxIntSet.new(4)
-m.insert(0)
-m.insert(2)
-m.insert(3)
-p m
 
 
 # class ResizingIntSet
