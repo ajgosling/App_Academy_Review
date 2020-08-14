@@ -113,10 +113,9 @@ class ResizingIntSet
   end
 end
 
-n = ResizingIntSet.new
-n.insert(5)
-n.insert(6)
-n.insert(27)
-n.insert(30)
-n.insert(74)
-p n
+# time complexities:
+# insert: O(1) - iterate through a bucket of average size 1
+# delete: O(1) - iterate through a bucket of average size 1
+# include?: O(1) - iterate through a bucket of average size 1
+
+# in the worst case, all operations are O(n), because all elements might end up in the same bucket
