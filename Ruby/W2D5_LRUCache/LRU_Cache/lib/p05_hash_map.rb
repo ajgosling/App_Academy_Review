@@ -19,7 +19,7 @@ class HashMap
     else
       @count += 1
 
-      resize! if @count == num_buckets
+      resize! if @count > num_buckets
 
       bucket(key).append(key, val)
     end
