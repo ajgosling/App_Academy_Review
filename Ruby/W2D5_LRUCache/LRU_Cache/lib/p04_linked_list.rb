@@ -24,9 +24,13 @@ class Node
 end
 
 class LinkedList
+  include Enumerable
+  attr_reader :head, :tail
   def initialize
     @head = Node.new
     @tail = Node.new
+    @head.next = @tail
+    @tail.prev = @head
   end
 
   def [](i)
@@ -35,34 +39,77 @@ class LinkedList
   end
 
   def first
+    @head.next
   end
 
   def last
+    @tail.prev
   end
 
   def empty?
+    @head.next == @tail
   end
 
   def get(key)
+    each do |node|
+      if node.key == key
+        return node.val
+      end
+    end
+
+    nil
   end
 
   def include?(key)
+    each do |node|
+      return true if node.key == key
+    end
+
+    false
   end
 
   def append(key, val)
+    # set old last node to curr_node
+    return if include?(key)
+
+    new_node = Node.new(key, val)
+    new_node.next = @tail
+    new_node.prev = @tail.prev
+    @tail.prev.next = new_node
+    @tail.prev = new_node
   end
 
   def update(key, val)
+    each do |node|
+      if node.key == key
+        return node.val = val
+      end
+    end
+
+    nil
   end
 
   def remove(key)
+    each do |node|
+      if node.key == key
+        return node.remove
+      end
+    end
+
+    nil
   end
 
   def each
+    current_node = @head.next
+
+    until current_node == @tail
+      yield current_node
+      current_node = current_node.next
+    end
   end
 
   # uncomment when you have `each` working and `Enumerable` included
-  # def to_s
-  #   inject([]) { |acc, link| acc << "[#{link.key}, #{link.val}]" }.join(", ")
-  # end
+  def to_s
+    inject([]) { |acc, link| acc << "[#{link.key}, #{link.val}]" }.join(", ")
+  end
 end
