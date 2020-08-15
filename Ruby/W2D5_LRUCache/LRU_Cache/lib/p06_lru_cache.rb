@@ -14,14 +14,15 @@ class LRUCache
   end
 
   def get(key)
-    if @map[key]
-      node = @map[key]
-      update_node!(node)
-      node.val
+    poss_node = @map[key]
+
+    if poss_node
+      update_node!(poss_node)
+      poss_node.val
     else
-      # the key wasn't in our hashmap... we need to add it
       calc!(key)
     end
+
   end
 
   def to_s
@@ -32,10 +33,11 @@ class LRUCache
 
   def calc!(key)
     # suggested helper method; insert an (un-cached) key
+
     val = @prc.call(key)
     eject! if @map.count == @max
-    @map.set(key, val)
-    @store.append(key, val)
+    new_node = @store.append(key, val)
+    @map[key] = new_node
     val
   end
 
@@ -43,6 +45,7 @@ class LRUCache
     # suggested helper method; move a node to the end of the list
     node.remove
     @map[node.key] = @store.append(node.key, node.val)
+
   end
 
   def eject!

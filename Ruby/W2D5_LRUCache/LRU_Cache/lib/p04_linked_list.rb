@@ -54,6 +54,7 @@ class LinkedList
     each do |node|
       if node.key == key
         return node.val
+        return node
       end
     end
 
@@ -77,6 +78,8 @@ class LinkedList
     new_node.prev = @tail.prev
     @tail.prev.next = new_node
     @tail.prev = new_node
+
+    new_node
   end
 
   def update(key, val)
