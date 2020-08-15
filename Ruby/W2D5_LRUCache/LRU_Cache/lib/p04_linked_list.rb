@@ -92,7 +92,8 @@ class LinkedList
   def remove(key)
     each do |node|
       if node.key == key
-        return node.remove
+        node.remove
+        return true
       end
     end
 
