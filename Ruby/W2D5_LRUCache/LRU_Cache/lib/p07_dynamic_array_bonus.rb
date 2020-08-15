@@ -26,6 +26,9 @@ class StaticArray
   end
 end
 
+s = StaticArray.new(4)
+
+s[4]
 class DynamicArray
   attr_accessor :count
 
