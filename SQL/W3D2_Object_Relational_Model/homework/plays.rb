@@ -26,6 +26,32 @@ class Play
     @playwright_id = options['playwright_id']
   end
 
+  def self.find_by_title(title)
+    data = PlayDBConnection.instance.execute(<<-SQL, title)
+      SELECT
+        *
+      FROM
+        plays
+      WHERE
+        title = ?
+    SQL
+
+    data.first ? Play.new(data.first) : nil
+  end
+
+  def self.find_by_playwright(name)
+    data = PlayDBConnection.instance.execute(<<-SQL, name)
+      SELECT
+        *
+      FROM
+        plays
+      WHERE
+        name = ?
+    SQL
+
+    data.first ? Play.new(data.first) : nil
+  end
+
   def create
     raise "#{self} already in database" if self.id
     PlayDBConnection.instance.execute(<<-SQL, self.title, self.year, self.playwright_id)
@@ -49,3 +75,6 @@ class Play
     SQL
   end
 end
+
+p Play.find_by_title("All My Sons")
+p Play.find_by_title("All my Sons")
