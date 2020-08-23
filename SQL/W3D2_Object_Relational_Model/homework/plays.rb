@@ -40,17 +40,20 @@ class Play
   end
 
   def self.find_by_playwright(name)
+    playwright = Playwright.find_by_name(name)
 
-    data = PlayDBConnection.instance.execute(<<-SQL, name)
+    raise "#{name} not found in DB" unless playwright
+
+    data = PlayDBConnection.instance.execute(<<-SQL, playwright.id)
       SELECT
         *
       FROM
-        playwrights
+        plays
       WHERE
-        name = ?
+        playwright_id = ?
     SQL
 
-    data.first ? Play.new(data.first) : nil
+    data
   end
 
   def create
@@ -105,9 +108,28 @@ class Playwright
 
     Playwright.new(data.first)
   end
+
+  def create
+    # if the instance of play class we are working with already has an id, then it must have came from the database
+    raise "#{self} already in database" if self.id
+
+    # insert into database
+    PlayDBConnection.instance.execute(<<-SQL, self.title, self.year, self.playwright_id)
+      INSERT INTO
+        plays (title, year, playwright_id)
+      VALUES
+        (?, ?, ?)
+    SQL
+
+    # set instance to have the id that was last inserted
+    self.id = PlayDBConnection.instance.last_insert_row_id
+  end
 end
 
-p Play.find_by_title("All My Sons")
-p Playwright.all
-p Playwright.find_by_name("Arthur Miller")
-p Playwright.find_by_name("arthur Miller")
+p PlayDBConnection.instance.methods
+p PlayDBConnection.instance.foreign_key_list(plays)
+
+# p Play.find_by_title("All My Sons")
+# p Playwright.all
+# p Play.find_by_playwright("Eugene O'Neill")
+# p Playwright.find_by_name("Arthur Miller")
