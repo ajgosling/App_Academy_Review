@@ -129,16 +129,27 @@ class Playwright
     raise "#{self} not in database" unless self.id
     PlayDBConnection.instance.execute(<<-SQL, self.name, self.birth_year, self.id)
       UPDATE
-        plays
+        playwrights
       SET
         name = ?, birth_year = ?
       WHERE
         id = ?
     SQL
   end
+
+  def get_plays
+    Play.find_by_playwright(self.name)
+  end
 end
 
 # p Playwright.all
 # p Play.find_by_playwright("Eugene O'Neill")
-a = Playwright.find_by_name("Arthur Miller")
-p a
+# a = Playwright.find_by_name("Arthur Miller")
+# a.name = "ARTHUR MILLER"
+# a.birth_year = 1930
+
+# p a
+
+# a.update
+
+p Playwright.all
