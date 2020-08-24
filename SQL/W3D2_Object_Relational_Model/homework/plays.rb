@@ -141,15 +141,3 @@ class Playwright
     Play.find_by_playwright(self.name)
   end
 end
-
-# p Playwright.all
-# p Play.find_by_playwright("Eugene O'Neill")
-# a = Playwright.find_by_name("Arthur Miller")
-# a.name = "ARTHUR MILLER"
-# a.birth_year = 1930
-
-# p a
-
-# a.update
-
-p Playwright.all
