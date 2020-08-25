@@ -88,9 +88,9 @@ CREATE TABLE replies (
     parent_id INTEGER,
     user_id INTEGER NOT NULL,
 
-   FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (question_id) REFERENCES questions(id),
-    FOREIGN KEY (parent_id) REFERENCES replies(id)
+    FOREIGN KEY (parent_id) REFERENCES replies(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 INSERT INTO
@@ -105,16 +105,21 @@ VALUES
    (
         'For my money it is Iroh!',
         (SELECT id FROM questions WHERE title LIKE '%Avatar%'),
-        (SELECT id FROM replies WHERE body LIKE '%best%'),
+        1,
         (SELECT id FROM users WHERE fname = 'Alix')
     ),
     (
         'It has to be Toph!',
         (SELECT id FROM questions WHERE title LIKE '%Avatar%'),
-        (SELECT id FROM replies WHERE body LIKE '%best%'),
+        1,
         (SELECT id FROM users WHERE fname = 'AJ')
+    ),
+    (
+        'Toph is certainly the best!',
+        (SELECT id FROM questions WHERE title LIKE '%Avatar%'),
+        3,
+        (SELECT id FROM users WHERE fname = 'Jourdan')
     );
-
 
 CREATE TABLE question_likes (
     id INTEGER PRIMARY KEY,

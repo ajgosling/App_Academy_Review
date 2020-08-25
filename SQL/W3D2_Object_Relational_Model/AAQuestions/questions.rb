@@ -132,6 +132,37 @@ class Reply
 
 end
 
+# class Reply
+#   attr_accessor :id, :body, :question_id, :parent_id, :user_id
+
+#   def self.all
+#     data = QuestionDBConnection.instance.execute("SELECT * FROM replies")
+#     data.map { |datum| Reply.new(datum) }
+#   end
+
+#   def initialize(options)
+#     @id = options['id']
+#     @question_id = options['question_id']
+#     @body = options['body']
+#     @parent_id = options['parent_id']
+#     @user_id = options['user_id']
+#   end
+
+#   def self.find_by_id(id)
+#     data = QuestionDBConnection.instance.execute(<<-SQL, id)
+#       SELECT
+#         *
+#       FROM
+#         replies
+#       WHERE
+#         id = ?
+#     SQL
+#     return nil unless data.length > 0
+#     Reply.new(data.first)
+#   end
+
+# end
+
 # AJ NOTE FOR TOMORROW:
 # COPYING THIS FORMAT FOR EACH TABLE IN Database
 # PARENT_ID FOR ALL REPLIES IS NIL, NOT SURE WHY
