@@ -70,6 +70,19 @@ class Question
     Question.new(data.first)
   end
 
+  def self.find_by_author_id(author_id)
+    data = QuestionDBConnection.instance.execute(<<-SQL, author_id)
+      SELECT
+        *
+      FROM
+        questions
+      WHERE
+        id = ?
+    SQL
+
+    data.map {|datum| Question.new(datum)}
+  end
+
 end
 
 class QuestionFollow
@@ -130,6 +143,31 @@ class Reply
     Reply.new(data.first)
   end
 
+  def self.find_by_user_id(user_id)
+    data = QuestionDBConnection.instance.execute(<<-SQL, user_id)
+      SELECT
+        *
+      FROM
+        replies
+      WHERE
+        user_id = ?
+    SQL
+
+    data.map {|datum| Reply.new(datum)}
+  end
+
+  def self.find_by_question_id(question_id)
+    data = QuestionDBConnection.instance.execute(<<-SQL, question_id)
+      SELECT
+        *
+      FROM
+        replies
+      WHERE
+        question_id = ?
+    SQL
+
+    data.map {|datum| Reply.new(datum)}
+  end
 end
 
 class QuestionLike
@@ -161,8 +199,9 @@ class QuestionLike
 
 end
 
+p Question.find_by_author_id(1)
 
-p QuestionLike.all
 puts
 puts
-p QuestionLike.find_by_id(3)
+
+p Reply.find_by_question_id(1)
