@@ -27,5 +27,19 @@ class User
     @lname = options['lname']
   end
 
+  def self.find_by_id(id)
+
+    data = QuestionDBConnection.instance.execute(<<-SQL, id)
+      SELECT
+        *
+      FROM
+        users
+      WHERE
+        id = ?
+    SQL
+
+    User.new(data.first)
+  end
+
 end
-User.all.each {|u| p u.fname}
+p User.find_by_id(1)
