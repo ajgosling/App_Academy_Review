@@ -1,22 +1,26 @@
+PRAGMA foreign_keys = ON;
+
+DROP TABLE if exists question_likes;
+DROP TABLE if exists replies;
+DROP TABLE if exists question_follows;
+DROP TABLE if exists questions;
 DROP TABLE if exists users;
 
 CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     fname TEXT NOT NULL,
     lname TEXT NOT NULL
-)
+);
 
 INSERT INTO
-  users
-    (fname, lname)
+  users (fname, lname)
 VALUES
     ('AJ', 'Gosling'),
     ('Jourdan', 'Lieblich'),
     ('Alix', 'Lieblich'),
     ('Dan', 'Gosling'),
-    ('Elliot', 'Grossman'),
+    ('Elliot', 'Grossman');
 
-DROP TABLE if exists questions;
 
 CREATE TABLE questions (
     id INTEGER PRIMARY KEY,
@@ -25,11 +29,10 @@ CREATE TABLE questions (
     author_id INTEGER NOT NULL,
 
     FOREIGN KEY (author_id) REFERENCES users(id)
-)
+);
 
 INSERT INTO
-  questions
-    (title, body, author_id)
+  questions (title, body, author_id)
 VALUES
     (
         'Is Avatar the greatest series ever?',
@@ -45,9 +48,8 @@ VALUES
         'Which college should I go to?',
         'I am really torn between Cal Poly and Hawaii',
         (SELECT id FROM users WHERE fname = 'Alix')
-    )
+    );
 
-DROP TABLE if exists question_follows;
 
 CREATE TABLE question_follows (
     id INTEGER PRIMARY KEY,
@@ -56,11 +58,10 @@ CREATE TABLE question_follows (
 
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (question_id) REFERENCES questions(id)
-)
+);
 
 INSERT INTO
-  questions_follows
-    (user_id, question_id)
+  question_follows (user_id, question_id)
 VALUES
     (
         (SELECT id FROM users WHERE fname = 'AJ'),
@@ -68,7 +69,7 @@ VALUES
     ),
     (
         (SELECT id FROM users WHERE fname = 'Alix'),
-        (SELECT id FROM questions WHERE title LIKE '%Avatar%')
+       (SELECT id FROM questions WHERE title LIKE '%Avatar%')
     ),
     (
         (SELECT id FROM users WHERE fname = 'Jourdan'),
@@ -77,9 +78,8 @@ VALUES
     (
         (SELECT id FROM users WHERE fname = 'AJ'),
         (SELECT id FROM questions WHERE title LIKE '%college%')
-    )
+    );
 
-DROP TABLE if exists replies;
 
 CREATE TABLE replies (
     id INTEGER PRIMARY KEY,
@@ -88,14 +88,13 @@ CREATE TABLE replies (
     parent_id INTEGER,
     user_id INTEGER NOT NULL,
 
-    FOREIGN KEY (user_id) REFERENCES users(id),
+   FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (question_id) REFERENCES questions(id),
     FOREIGN KEY (parent_id) REFERENCES replies(id)
-)
+);
 
 INSERT INTO
-  replies
-    (body, question_id, parent_id, user_id)
+  replies (body, question_id, parent_id, user_id)
 VALUES
     (
         'Avatar is certainly the best series! who is the best character?',
@@ -103,7 +102,7 @@ VALUES
         NULL,
         (SELECT id FROM users WHERE fname = 'Jourdan')
     ),
-    (
+   (
         'For my money it is Iroh!',
         (SELECT id FROM questions WHERE title LIKE '%Avatar%'),
         (SELECT id FROM replies WHERE body LIKE '%best%'),
@@ -114,9 +113,8 @@ VALUES
         (SELECT id FROM questions WHERE title LIKE '%Avatar%'),
         (SELECT id FROM replies WHERE body LIKE '%best%'),
         (SELECT id FROM users WHERE fname = 'AJ')
-    )
+    );
 
-DROP TABLE if exists question_likes;
 
 CREATE TABLE question_likes (
     id INTEGER PRIMARY KEY,
@@ -125,11 +123,10 @@ CREATE TABLE question_likes (
 
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (question_id) REFERENCES questions(id)
-)
+);
 
 INSERT INTO
-  question_likes
-    (user_id, question_id)
+  question_likes (user_id, question_id)
 VALUES
     (
         (SELECT id FROM users WHERE fname = 'AJ'),
@@ -137,7 +134,7 @@ VALUES
     ),
     (
         (SELECT id FROM users WHERE fname = 'Alix'),
-        (SELECT id FROM questions WHERE title LIKE '%Avatar%')
+       (SELECT id FROM questions WHERE title LIKE '%Avatar%')
     ),
     (
         (SELECT id FROM users WHERE fname = 'Jourdan'),
@@ -146,5 +143,4 @@ VALUES
     (
         (SELECT id FROM users WHERE fname = 'AJ'),
         (SELECT id FROM questions WHERE title LIKE '%college%')
-    )
-
+    );
