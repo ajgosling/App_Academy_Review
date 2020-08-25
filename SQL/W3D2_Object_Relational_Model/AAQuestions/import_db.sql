@@ -46,6 +46,7 @@ VALUES
         'I am really torn between Cal Poly and Hawaii',
         (SELECT id FROM users WHERE fname = 'Alix')
     )
+
 DROP TABLE if exists question_follows;
 
 CREATE TABLE question_follows (
@@ -57,8 +58,26 @@ CREATE TABLE question_follows (
     FOREIGN KEY (question_id) REFERENCES questions(id)
 )
 
--- This is an example of a join table; the rows in question_follows are used to join users to questions and vice versa.
--- Add a replies table.
+INSERT INTO
+  questions_follows
+    (user_id, question_id)
+VALUES
+    (
+        (SELECT id FROM users WHERE fname = 'AJ'),
+        (SELECT id FROM questions WHERE title LIKE '%Avatar%')
+    ),
+    (
+        (SELECT id FROM users WHERE fname = 'Alix'),
+        (SELECT id FROM questions WHERE title LIKE '%Avatar%')
+    ),
+    (
+        (SELECT id FROM users WHERE fname = 'Jourdan'),
+        (SELECT id FROM questions WHERE title LIKE '%Avatar%')
+    ),
+    (
+        (SELECT id FROM users WHERE fname = 'AJ'),
+        (SELECT id FROM questions WHERE title LIKE '%college%')
+    )
 
 DROP TABLE if exists replies;
 
@@ -73,10 +92,33 @@ CREATE TABLE replies (
     FOREIGN KEY (question_id) REFERENCES questions(id),
     FOREIGN KEY (parent_id) REFERENCES replies(id)
 )
--- Add a question_likes table.
-DROP TABLE if exists likes;
 
-CREATE TABLE likes (
+INSERT INTO
+  replies
+    (body, question_id, parent_id, user_id)
+VALUES
+    (
+        'Avatar is certainly the best series! who is the best character?',
+        (SELECT id FROM questions WHERE title LIKE '%Avatar%'),
+        NULL,
+        (SELECT id FROM users WHERE fname = 'Jourdan')
+    ),
+    (
+        'For my money it is Iroh!',
+        (SELECT id FROM questions WHERE title LIKE '%Avatar%'),
+        (SELECT id FROM replies WHERE body LIKE '%best%'),
+        (SELECT id FROM users WHERE fname = 'Alix')
+    ),
+    (
+        'It has to be Toph!',
+        (SELECT id FROM questions WHERE title LIKE '%Avatar%'),
+        (SELECT id FROM replies WHERE body LIKE '%best%'),
+        (SELECT id FROM users WHERE fname = 'AJ')
+    )
+
+DROP TABLE if exists question_likes;
+
+CREATE TABLE question_likes (
     id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     question_id INTEGER NOT NULL,
@@ -84,6 +126,25 @@ CREATE TABLE likes (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (question_id) REFERENCES questions(id)
 )
--- Users can like a question.
--- Have references to the user and the question in this table
+
+INSERT INTO
+  question_likes
+    (user_id, question_id)
+VALUES
+    (
+        (SELECT id FROM users WHERE fname = 'AJ'),
+        (SELECT id FROM questions WHERE title LIKE '%Avatar%')
+    ),
+    (
+        (SELECT id FROM users WHERE fname = 'Alix'),
+        (SELECT id FROM questions WHERE title LIKE '%Avatar%')
+    ),
+    (
+        (SELECT id FROM users WHERE fname = 'Jourdan'),
+        (SELECT id FROM questions WHERE title LIKE '%Avatar%')
+    ),
+    (
+        (SELECT id FROM users WHERE fname = 'AJ'),
+        (SELECT id FROM questions WHERE title LIKE '%college%')
+    )
 
