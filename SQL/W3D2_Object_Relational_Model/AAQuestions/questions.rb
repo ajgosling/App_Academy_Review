@@ -1,8 +1,6 @@
 require 'sqlite3'
 require 'singleton'
 
-
-
 class QuestionDBConnection < SQLite3::Database
   include Singleton
 
@@ -38,6 +36,27 @@ class User
     SQL
     return nil unless data.length > 0
     User.new(data.first)
+  end
+
+  def self.find_by_name(fname, lname)
+    data = QuestionDBConnection.instance.execute(<<-SQL, fname, lname)
+      SELECT
+        *
+      FROM
+        users
+      WHERE
+        fname = ? AND lname = ?
+    SQL
+    return nil unless data.length > 0
+    User.new(data.first)
+  end
+
+  def authored_questions
+    Question.find_by_author_id(@id)
+  end
+
+  def authored_replies
+    Reply.find_by_user_id(@id)
   end
 
 end
@@ -83,6 +102,10 @@ class Question
     data.map {|datum| Question.new(datum)}
   end
 
+  def author
+    User.find_by_id(@author_id)
+  end
+
 end
 
 class QuestionFollow
@@ -110,6 +133,21 @@ class QuestionFollow
     SQL
     return nil unless data.length > 0
     QuestionFollow.new(data.first)
+  end
+
+  def self.followers_for_question_id(question_id)
+    data = QuestionDBConnection.instance.execute(<<-SQL, question_id)
+      SELECT
+        users.*
+      FROM
+        question_follows
+      JOIN
+        users ON question_follows.user_id = users.id
+      WHERE
+        question_follows.question_id = ?
+    SQL
+
+    data.map {|datum| User.new(datum)}
   end
 
 end
@@ -168,6 +206,37 @@ class Reply
 
     data.map {|datum| Reply.new(datum)}
   end
+
+  def author
+    User.find_by_id(@user_id)
+  end
+
+  def parent_reply
+    return nil unless @parent_id
+    data = QuestionDBConnection.instance.execute(<<-SQL, @parent_id)
+      SELECT
+        *
+      FROM
+        replies
+      WHERE
+        id = ?
+    SQL
+
+    Reply.new(data.first)
+  end
+
+  def child_replies
+    data = QuestionDBConnection.instance.execute(<<-SQL, @id)
+      SELECT
+        *
+      FROM
+        replies
+      WHERE
+        parent_id = ?
+    SQL
+
+    data.map {|datum| Reply.new(datum)}
+  end
 end
 
 class QuestionLike
@@ -199,9 +268,6 @@ class QuestionLike
 
 end
 
-p Question.find_by_author_id(1)
-
+# p Question.find_by_author_id(1)
 puts
-puts
-
-p Reply.find_by_question_id(1)
+p QuestionFollow.followers_for_question_id(1)
