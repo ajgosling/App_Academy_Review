@@ -1,0 +1,14 @@
+
+p {
+  color: blue;
+  background-color: red;
+}
+
+
+article {
+  background-color: green;
+}
+
+p {
+  background-color: inherit;
+}
