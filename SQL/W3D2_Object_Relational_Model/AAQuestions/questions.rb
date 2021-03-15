@@ -1,5 +1,6 @@
 require 'sqlite3'
 require 'singleton'
+require 'active_support/inflector'
 
 class QuestionDBConnection < SQLite3::Database
   include Singleton
@@ -12,7 +13,7 @@ class QuestionDBConnection < SQLite3::Database
 end
 
 class ModelBase
-    def self.find_by_id(id)
+  def self.find_by_id(id)
     data = QuestionDBConnection.instance.execute(<<-SQL, id)
       SELECT
         *
@@ -22,12 +23,24 @@ class ModelBase
         id = ?
     SQL
     return nil unless data.length > 0
-    User.new(data.first)
+    return self.new(data.first)
+  end
+
+  def self.all
+    name = self.name.tableize
+    data = QuestionDBConnection.instance.execute("SELECT * FROM #{name}")
+    data.map { |datum| User.new(datum) }
   end
 end
 
 class User < ModelBase
   attr_accessor :id, :fname, :lname
+
+  def initialize(options)
+    @id = options['id']
+    @fname = options['fname']
+    @lname = options['lname']
+  end
 
   def save
     if @id
@@ -53,17 +66,6 @@ class User < ModelBase
     end
 
     self
-  end
-
-  def self.all
-    data = QuestionDBConnection.instance.execute("SELECT * FROM users")
-    data.map { |datum| User.new(datum) }
-  end
-
-  def initialize(options)
-    @id = options['id']
-    @fname = options['fname']
-    @lname = options['lname']
   end
 
   def self.find_by_name(fname, lname)
@@ -97,13 +99,8 @@ class User < ModelBase
 
 end
 
-class Question
+class Question < ModelBase
   attr_accessor :id, :title, :body, :author_id
-
-  def self.all
-    data = QuestionDBConnection.instance.execute("SELECT * FROM questions")
-    data.map { |datum| Question.new(datum) }
-  end
 
   def initialize(options)
     @id = options['id']
@@ -138,19 +135,6 @@ class Question
     self
   end
 
-  def self.find_by_id(id)
-    data = QuestionDBConnection.instance.execute(<<-SQL, id)
-      SELECT
-        *
-      FROM
-        questions
-      WHERE
-        id = ?
-    SQL
-    return nil unless data.length > 0
-    Question.new(data.first)
-  end
-
   def self.find_by_author_id(author_id)
     data = QuestionDBConnection.instance.execute(<<-SQL, author_id)
       SELECT
@@ -158,7 +142,7 @@ class Question
       FROM
         questions
       WHERE
-        id = ?
+        author_id = ?
     SQL
 
     data.map {|datum| Question.new(datum)}
@@ -189,14 +173,9 @@ class Question
   end
 end
 
-class QuestionFollow
+class QuestionFollow < ModelBase
 
   attr_accessor :id, :user_id, :question_id
-
-  def self.all
-    data = QuestionDBConnection.instance.execute("SELECT * FROM question_follows")
-    data.map { |datum| QuestionFollow.new(datum) }
-  end
 
   def initialize(options)
     @id = options['id']
@@ -267,13 +246,8 @@ class QuestionFollow
   end
 end
 
-class Reply
+class Reply < ModelBase
   attr_accessor :id, :body, :question_id, :parent_id, :user_id
-
-  def self.all
-    data = QuestionDBConnection.instance.execute("SELECT * FROM replies")
-    data.map { |datum| Reply.new(datum) }
-  end
 
   def initialize(options)
     @id = options['id']
@@ -354,13 +328,8 @@ class Reply
   end
 end
 
-class QuestionLike
+class QuestionLike < ModelBase
   attr_accessor :id, :user_id, :question_id
-
-  def self.all
-    data = QuestionDBConnection.instance.execute("SELECT * FROM question_likes")
-    data.map { |datum| QuestionLike.new(datum) }
-  end
 
   def initialize(options)
     @id = options['id']
@@ -440,5 +409,3 @@ class QuestionLike
     data.map {|datum| Question.new(datum)}
   end
 end
-
-p Question.all
