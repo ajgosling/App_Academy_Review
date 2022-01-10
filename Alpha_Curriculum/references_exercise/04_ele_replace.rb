@@ -8,6 +8,12 @@
 
 def ele_replace!(array, hash)
 
+    array.each_with_index do |el, idx|
+        array[idx] = hash[el] if hash.has_key?(el)
+    end
+
+    array
+
 end
 
 

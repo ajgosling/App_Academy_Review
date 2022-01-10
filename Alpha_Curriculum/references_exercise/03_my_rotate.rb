@@ -1,17 +1,23 @@
 # Write a method, my_rotate!(array, amt), that accepts an array and a number as args.
-# The method should mutate the array by rotating the elements 'amt' number of times. 
+# The method should mutate the array by rotating the elements 'amt' number of times.
 # When given a positive 'amt', a single rotation will rotate left, causing the first element to move to the last index
 # When given a negative 'amt', a single rotation will rotate right, causing the last element to move to the first index
 # The method should return the given array.
 # Do not use the built-in Array#rotate
-# 
+#
 # Note: this method must MUTATE the input array. This means that the object_id of the input array should be identical
 # to the object_id of the returned array. The exact object_ids you get back don't matter. We just want the ids
 # to be the same before and after calling your method.
 
 
 def my_rotate!(array, amt)
+    if amt >= 0
+        amt.times { array << array.shift }
+    else
+        amt.abs.times { array.unshift(array.pop) }
+    end
 
+    array
 end
 
 
