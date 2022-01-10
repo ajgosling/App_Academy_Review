@@ -3,6 +3,16 @@
 # The method should return false otherwise. For example coprime?(25, 12) is true because
 # 1 is the only number that divides both 25 and 12.
 
+def coprime?(num1, num2)
+    fac = 2
+    while fac < num1 / 2
+        if num1 % fac == 0 && num2 % fac == 0
+            return false
+        end
+        fac += 1
+    end
+    true
+end
 
 p coprime?(25, 12)    # => true
 p coprime?(7, 11)     # => true
