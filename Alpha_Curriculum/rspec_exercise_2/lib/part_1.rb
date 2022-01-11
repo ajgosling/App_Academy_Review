@@ -51,3 +51,34 @@ def power_of_two?(num)
 
     false
 end
+
+def palindrome?(str)
+    i = 0
+    while i < str.length / 2
+        return false if str[i] != str[-i - 1]
+        i += 1
+    end
+    true
+end
+
+def substrings(str)
+    subs_arr = []
+    i = 0
+
+    while i < str.length
+        j = i
+        while j < str.length
+            subs_arr << str[i..j]
+            j += 1
+        end
+        i += 1
+    end
+
+    subs_arr
+end
+
+def palindrome_substrings(str)
+    subs = substrings(str)
+
+    subs.select {|sub| sub.length > 1 && palindrome?(sub)}
+end
