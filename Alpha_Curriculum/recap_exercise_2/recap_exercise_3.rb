@@ -179,3 +179,18 @@ end
 # p multiply(-3, -6)      # => 18
 # p multiply(3, -6)       # => -18
 # p multiply(-3, 6)       # => -18
+
+def lucas_sequence(n)
+  lucas_arr = [2, 1]
+  return lucas_arr[0...n] if n < 3
+  prev_arr = lucas_sequence(n - 1)
+  prev_arr << prev_arr[-2] + prev_arr[-1]
+  prev_arr
+end
+
+p lucas_sequence(0)   # => []
+p lucas_sequence(1)   # => [2]
+p lucas_sequence(2)   # => [2, 1]
+p lucas_sequence(3)   # => [2, 1, 3]
+p lucas_sequence(6)   # => [2, 1, 3, 4, 7, 11]
+p lucas_sequence(8)   # => [2, 1, 3, 4, 7, 11, 18, 29]
