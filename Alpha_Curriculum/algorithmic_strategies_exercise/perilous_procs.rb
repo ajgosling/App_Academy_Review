@@ -57,12 +57,12 @@ def proctition(arr, &prc)
   true_arr + false_arr
 end
 
-p proctition([4, -5, 7, -10, -2, 1, 3]) { |el| el > 0 }
-# [4, 7, 1, 3, -5, -10, -2]
-p proctition([7, 8, 3, 6, 10]) { |el| el.even? }
-# [8, 6, 10, 7, 3]
-p proctition(['cat','boot', 'dog', 'bug', 'boat']) { |s| s[0] == 'b' }
-# ["boot", "bug", "boat", "cat", "dog"]
+# p proctition([4, -5, 7, -10, -2, 1, 3]) { |el| el > 0 }
+# # [4, 7, 1, 3, -5, -10, -2]
+# p proctition([7, 8, 3, 6, 10]) { |el| el.even? }
+# # [8, 6, 10, 7, 3]
+# p proctition(['cat','boot', 'dog', 'bug', 'boat']) { |s| s[0] == 'b' }
+# # ["boot", "bug", "boat", "cat", "dog"]
 
 # Phase 3: Perilous.
 # selected_map!
@@ -88,17 +88,13 @@ end
 
 # chain_map
 # Write a method that accepts any value and an array of procs as an argument. The method should return the final result of feeding the value through all of the procs. For example, if the array contains three procs, then:
-
-# the value is given to the first proc
-# the result of the first proc is given to the second proc
-# the result of the second proc is given to the third proc
-# the result of third proc is the final result
-# Examples
+def chain_map(val, proc_arr)
+  proc_arr.inject(val) {|acc, proc| proc.call(acc)}
+end
 
 # add_5 = Proc.new { |n| n + 5 }
 # half = Proc.new { |n| n / 2.0 }
 # square = Proc.new { |n| n * n }
-
 # p chain_map(25, [add_5, half])          # 15.0
 # p chain_map(25, [half, add_5])          # 17.5
 # p chain_map(25, [add_5, half, square])  # 225
@@ -107,34 +103,36 @@ end
 
 # proc_suffix
 # Write a method proc_suffix that accepts a sentence and a hash as arguments. The hash contains procs as keys and suffix strings as values. The method should return a new sentence where each word of the original sentence is appended with a suffix if the original word returns true when given to the corresponding proc key. If an original word returns true for multiple procs, then the suffixes should be appended in the order that they appear in the input hash.
-
-# Examples
+def proc_suffix(sent, hash)
+  sent.split.map do |word|
+    new_word = word
+    hash.each {|prc, suffix| new_word += suffix if prc.call(word)}
+    new_word
+  end.join(" ")
+end
 
 # contains_a = Proc.new { |w| w.include?('a') }
 # three_letters = Proc.new { |w| w.length == 3 }
 # four_letters = Proc.new { |w| w.length == 4 }
-
 # p proc_suffix('dog cat',
 #     contains_a => 'ly',
 #     three_letters => 'o'
 # )   # "dogo catlyo"
-
 # p proc_suffix('dog cat',
 #     three_letters => 'o',
 #     contains_a => 'ly'
 # )   # "dogo catoly"
-
 # p proc_suffix('wrong glad cat',
 #     contains_a => 'ly',
 #     three_letters => 'o',
 #     four_letters => 'ing'
 # )   # "wrong gladlying catlyo"
-
 # p proc_suffix('food glad rant dog cat',
 #     four_letters => 'ing',
 #     contains_a => 'ly',
 #     three_letters => 'o'
 # )   # "fooding gladingly rantingly dogo catlyo"
+
 # proctition_platinum
 # Write a method proctition_platinum that accepts an array and any number of additional procs as arguments. The method should return a hash where the keys correspond to the number of procs passed in.
 
@@ -143,29 +141,46 @@ end
 
 # For example, this means that the array that corresponds to the key 2 should contain the elements that return true when passed into the second proc.
 # If an element returns true for multiple procs, then it should only be placed into the array that corresponds to the proc that appears first in the arguments.
+def proctition_platinum(arr, *proc_arr)
+  proc_hash = {}
+  proc_arr.length.times do |time|
+    proc_hash[time + 1] = []
+  end
 
-# Examples
+  arr.each do |el|
+    proc_arr.each_with_index do |proc, idx|
+      if proc.call(el)
+        proc_hash[idx + 1] << el
+        break
+      end
+    end
+  end
+
+  proc_hash
+end
 
 # is_yelled = Proc.new { |s| s[-1] == '!' }
 # is_upcase = Proc.new { |s| s.upcase == s }
 # contains_a = Proc.new { |s| s.downcase.include?('a') }
 # begins_w = Proc.new { |s| s.downcase[0] == 'w' }
-
 # p proctition_platinum(['WHO', 'what', 'when!', 'WHERE!', 'how', 'WHY'], is_yelled, contains_a)
 # # {1=>["when!", "WHERE!"], 2=>["what"]}
-
 # p proctition_platinum(['WHO', 'what', 'when!', 'WHERE!', 'how', 'WHY'], is_yelled, is_upcase, contains_a)
 # # {1=>["when!", "WHERE!"], 2=>["WHO", "WHY"], 3=>["what"]}
-
 # p proctition_platinum(['WHO', 'what', 'when!', 'WHERE!', 'how', 'WHY'], is_upcase, is_yelled, contains_a)
 # # {1=>["WHO", "WHERE!", "WHY"], 2=>["when!"], 3=>["what"]}
-
 # p proctition_platinum(['WHO', 'what', 'when!', 'WHERE!', 'how', 'WHY'], begins_w, is_upcase, is_yelled, contains_a)
 # # {1=>["WHO", "what", "when!", "WHERE!", "WHY"], 2=>[], 3=>[], 4=>[]}
+
 # procipher
 # Write a method procipher that accepts a sentence and a hash as arguments. The hash contains procs as both keys and values. The method should return a new sentence where each word of the input sentence is changed by a value proc if the original word returns true when passed into the key proc. If an original word returns true for multiple key procs, then the value proc changes should be applied in the order that they appear in the hash.
-
-# Examples
+def procipher(sent, hash)
+  sent.split.map do |word|
+    new_word = word
+    hash.each {|k, v| new_word = v.call(new_word) if k.call(word)}
+    new_word
+  end.join(" ")
+end
 
 # is_yelled = Proc.new { |s| s[-1] == '!' }
 # is_upcase = Proc.new { |s| s.upcase == s }
@@ -173,37 +188,43 @@ end
 # make_question = Proc.new { |s| s + '???' }
 # reverse = Proc.new { |s| s.reverse }
 # add_smile = Proc.new { |s| s + ':)' }
-
 # p procipher('he said what!',
 #     is_yelled => make_question,
 #     contains_a => reverse
 # ) # "he dias ???!tahw"
-
 # p procipher('he said what!',
 #     contains_a => reverse,
 #     is_yelled => make_question
 # ) # "he dias !tahw???"
-
 # p procipher('he said what!',
 #     contains_a => reverse,
 #     is_yelled => add_smile
 # ) # "he dias !tahw:)"
-
 # p procipher('stop that taxi now',
 #     is_upcase => add_smile,
 #     is_yelled => reverse,
 #     contains_a => make_question
 # ) # "stop that??? taxi??? now"
-
 # p procipher('STOP that taxi now!',
 #     is_upcase => add_smile,
 #     is_yelled => reverse,
 #     contains_a => make_question
 # ) # "STOP:) that??? taxi??? !won"
+
 # picky_procipher
 # Write a method picky_procipher that accepts a sentence and a hash as arguments. The hash contains procs as both keys and values. The method should return a new sentence where each word of the input sentence is changed by a value proc if the original word returns true when passed into the key proc. If an original word returns true for multiple key procs, then only the value proc that appears earliest in the hash should be applied.
-
-# Examples
+def picky_procipher(sent, hash)
+  sent.split.map do |word|
+    new_word = word
+    hash.each do |k, v|
+      if k.call(word)
+        new_word = v.call(new_word)
+        break
+      end
+    end
+    new_word
+  end.join(" ")
+end
 
 # is_yelled = Proc.new { |s| s[-1] == '!' }
 # is_upcase = Proc.new { |s| s.upcase == s }
@@ -211,28 +232,23 @@ end
 # make_question = Proc.new { |s| s + '???' }
 # reverse = Proc.new { |s| s.reverse }
 # add_smile = Proc.new { |s| s + ':)' }
-
 # p picky_procipher('he said what!',
 #     is_yelled => make_question,
 #     contains_a => reverse
 # ) # "he dias what!???"
-
 # p picky_procipher('he said what!',
 #     contains_a => reverse,
 #     is_yelled => make_question
 # ) # "he dias !tahw"
-
 # p picky_procipher('he said what!',
 #     contains_a => reverse,
 #     is_yelled => add_smile
 # ) # "he dias !tahw"
-
 # p picky_procipher('stop that taxi now',
 #     is_upcase => add_smile,
 #     is_yelled => reverse,
 #     contains_a => make_question
 # ) # "stop that??? taxi??? now"
-
 # p picky_procipher('STOP that taxi!',
 #     is_upcase => add_smile,
 #     is_yelled => reverse,
