@@ -19,6 +19,10 @@ class TodoBoard
       @list.down(*args)
     when 'swap'
       @list.swap(*args)
+    when 'toggle'
+      @list.toggle_item(*args)
+    when 'rm'
+      @list.remove_item(*args)
     when 'sort'
       @list.sort_by_date!
     when 'priority'
