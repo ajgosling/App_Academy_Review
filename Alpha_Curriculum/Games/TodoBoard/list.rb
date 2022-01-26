@@ -51,6 +51,7 @@ class List
   end
 
   def remove_item(idx)
+    idx = idx.to_i
     return false unless valid_index?(idx)
     @items.delete_at(idx)
     true
@@ -127,15 +128,3 @@ class List
     @items.sort_by! {|i| i.deadline}
   end
 end
-
-p "done"
-l = List.new("DADS CAR THING")
-l.add_item('Fix login page', '2019-10-22', 'It loads slow.')
-l.add_item('buy a cheeseburger', '2018-02-31', 'yummy! what a tasty burger!')
-l.add_item('fix car', '2020-02-30', 'need to take car to Jiffy Lube')
-l.add_item('replace desk', '2017-11-01', 'upgrade to an electric standing desk')
-l.add_item('drink water', '2019-10-11', 'important to stay hydrated!!!')
-l.toggle_item(0)
-l.toggle_item(2)
-l.print
-l.print_full_item(0)
