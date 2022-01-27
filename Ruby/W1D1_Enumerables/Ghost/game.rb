@@ -4,11 +4,13 @@ require "byebug"
 
 class Game
   attr_reader :dictionary
-  def initialize(p1_name, p2_name)
+  def initialize(*players)
     words = File.readlines("dictionary.txt").map(&:chomp)
     @dictionary = Set.new(words)
-    @players = [Player.new(p1_name), Player.new(p2_name)]
     @fragment = ""
+    @players = players.map {|name| Player.new(name)}
+    @losses_hash = {}
+    @players.each {|player| @losses_hash[player] = 0}
   end
 
   def current_player
@@ -40,16 +42,44 @@ class Game
     @dictionary.include?(@fragment)
   end
 
+  def display_standings
+    puts "-" * 40
+    puts "-" * 40
+    puts "the current standings are:"
+    @losses_hash.each do |player, loss_count|
+      puts "#{player.name}: #{"GHOST"[0...loss_count]}"
+    end
+    puts "-" * 40
+    puts "-" * 40
+  end
+
   def play_round
     until lost?
       take_turn(current_player)
       next_player!
     end
     puts "the losing word was \"#{@fragment}\""
-    puts "#{previous_player.name} is a big fat LOSER HAHAHAH"
-    previous_player
+    puts "#{previous_player.name} has lost this round"
+    @losses_hash[previous_player] += 1
+    if @losses_hash[previous_player] == 5
+      puts "#{previous_player.name} has turned into a ghost!!!"
+      @players.delete(previous_player)
+    end
+  end
+
+  def run
+    until @players.length == 1
+      play_round
+      display_standings
+      @fragment = ""
+    end
+    puts "#{@players.first.name} is the big winner!!!"
+    puts "thanks for playing!"
+    true
   end
 end
 
-g = Game.new("AJ", "Dan")
-g.play_round
+if __FILE__ == $PROGRAM_NAME
+  g = Game.new("AJ", "Dan", "Katy")
+  g.run
+end
