@@ -33,15 +33,15 @@ class Game
     if @prev_guess_pos
       if board.match?(@prev_guess_pos, guessed_pos)
         # is a match, leave both cards face up
-        reset_prev_guess
         @player.receive_match(@board[guessed_pos], @prev_guess_pos, guessed_pos)
+        reset_prev_guess
         return "it was a match!"
       else
         # not a match, sleep for 3 seconds
         system("clear")
         render
         puts "it wasn't a match... :("
-        sleep(1)
+        @player.take_break
         @board.hide(@prev_guess_pos)
         @board.hide(guessed_pos)
         reset_prev_guess
@@ -68,6 +68,7 @@ end
 
 
 if __FILE__ == $PROGRAM_NAME
-  g = Game.new
+  g = Game.new(HumanPlayer.new)
+  # g = Game.new(ComputerPlayer.new)
   g.play
 end

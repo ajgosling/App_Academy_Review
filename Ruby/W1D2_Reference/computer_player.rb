@@ -60,6 +60,10 @@ class ComputerPlayer
     end
   end
 
+  def take_break
+    sleep(1)
+  end
+
   def receive_revealed_card(card, pos)
     @known_cards[card.value] << pos unless @known_cards[card.value].include?(pos)
   end
@@ -68,14 +72,4 @@ class ComputerPlayer
     @known_cards[card.value].delete(pos1)
     @known_cards[card.value].delete(pos2)
   end
-end
-
-if __FILE__ == $PROGRAM_NAME
-  h = Hash.new {|h, k| h[k] = []}
-  h["a"] << [0, 0]
-  p h
-  h["a"] << [0, 1]
-  p h
-
-
 end

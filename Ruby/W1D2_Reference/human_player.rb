@@ -14,6 +14,10 @@ class HumanPlayer
     guessed_pos
   end
 
+  def take_break
+    sleep(3)
+  end
+
   def receive_revealed_card(val, pos)
   end
 
