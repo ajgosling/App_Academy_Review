@@ -14,9 +14,9 @@ class HumanPlayer
     guessed_pos
   end
 
-  def receive_revealed_card(pos, val)
+  def receive_revealed_card(val, pos)
   end
 
-  def receive_match(pos1, pos2)
+  def receive_match(val, pos1, pos2)
   end
 end

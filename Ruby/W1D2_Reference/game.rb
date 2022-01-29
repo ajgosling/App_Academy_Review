@@ -1,10 +1,12 @@
 require_relative "card.rb"
 require_relative "board.rb"
 require_relative "human_player.rb"
+require_relative "computer_player.rb"
+require 'byebug'
 
 class Game
   attr_accessor :board, :prev_guess_pos, :guess_count
-  def initialize(player=HumanPlayer.new)
+  def initialize(player=ComputerPlayer.new)
     @player = player
     @board = Board.new
     @prev_guess_pos = nil
@@ -27,17 +29,19 @@ class Game
   def make_guess(guessed_pos)
     @guess_count += 1
     @board.reveal(guessed_pos)
+    @player.receive_revealed_card(@board[guessed_pos], guessed_pos)
     if @prev_guess_pos
       if board.match?(@prev_guess_pos, guessed_pos)
         # is a match, leave both cards face up
         reset_prev_guess
+        @player.receive_match(@board[guessed_pos], @prev_guess_pos, guessed_pos)
         return "it was a match!"
       else
         # not a match, sleep for 3 seconds
         system("clear")
         render
         puts "it wasn't a match... :("
-        sleep(3)
+        sleep(1)
         @board.hide(@prev_guess_pos)
         @board.hide(guessed_pos)
         reset_prev_guess
