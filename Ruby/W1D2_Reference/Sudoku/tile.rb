@@ -13,7 +13,7 @@ class Tile
 
   def colorized_value
     if value == "0"
-      " "
+      return " "
     end
 
     @given ? @value.light_white : @value.light_green
@@ -26,11 +26,4 @@ class Tile
   def inspect
     colorized_value
   end
-end
-
-if __FILE__ == $PROGRAM_NAME
-  t = Tile.new("4", false)
-  i = Tile.new("5")
-  puts t
-  puts i
 end
