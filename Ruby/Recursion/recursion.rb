@@ -130,7 +130,7 @@ end
 
 def greedy_make_change(amt, coins_arr)
   result_arr = []
-  coins_arr.sort.reverse.each do |coin|
+  coins_arr.each do |coin|
     while amt >= coin
       result_arr << coin
       amt -= coin
@@ -139,11 +139,26 @@ def greedy_make_change(amt, coins_arr)
   result_arr
 end
 
-p greedy_make_change(24, [10, 7, 1])
-
 def make_better_change(amt, coins_arr)
-  # return [amt] if coins_arr.include?(amt)
-  # otherwise, iterate over each coin less than or equal to our coin size
-  # make better change with that coin, return the minimum coin length
-  # res = coins_arr.map.with_index {|coin, idx| make_better_change(amt)}
+  return [] if amt == 0
+  return [nil] if amt < coins_arr.last
+
+  coin_results_arr = []
+  coins_arr.each_with_index do |coin, idx|
+    next if coin > amt
+    coin_results_arr << [coin] + make_better_change(amt - coin, coins_arr[idx..-1])
+  end
+
+  coin_results_arr.delete(nil)
+  return nil if coin_results_arr.empty?
+  coin_results_arr.sort {|arr1, arr2| arr1.length <=> arr2.length}.first
+
+
 end
+
+# p greedy_make_change(24, [10, 7, 1])
+# p make_better_change(24, [10, 7, 1])
+p make_better_change(23, [10, 7])
+
+# try to make the change return nil if there is no possible way to make proper change
+# while still returning the correct answer if there is a way
