@@ -1,73 +1,61 @@
 require 'set'
-
 class WordChainer
-    attr_reader :dictionary
+  attr_reader :dictionary
+  def initialize(file='dictionary.txt')
+    @dictionary = File.open(file).readlines.map(&:chomp)
+    @dictionary = Set[*@dictionary]
+  end
 
-    def initialize(dictionary_file_name)
-        file = File.open(dictionary_file_name)
-        @dictionary = (file.readlines.map {|l| l.rstrip}).to_set
+  def adjacent_words(word)
+    adjacent_arr = []
+    alpha = ("a".."z")
+
+    word.each_char.with_index do |c, i|
+      alpha.each do |letter|
+        next if letter == c
+        new_word = word.dup
+        new_word[i] = letter
+        adjacent_arr << new_word if @dictionary.include?(new_word)
+      end
     end
+    adjacent_arr
+  end
 
-    def run(source, target)
-        @current_words = [source]
-        @all_seen_words = { source => nil }
-
-        until @current_words.empty?
-
-            new_current_words = explore_current_words
-
-            if @all_seen_words.has_key?(target)
-                return build_path(target)
-            end
-
-            @current_words = new_current_words
-        end
+  def explore_current_words
+    new_current_words = []
+    @current_words.each do |current_word|
+      new_words = adjacent_words(current_word)
+      new_words.reject! {|w| @all_seen_words.include?(w)}
+      new_current_words += new_words
+      add_to_all_seen_words(new_words, current_word)
     end
+    @current_words = new_current_words
+  end
 
-    def build_path(target)
-        path_arr = []
-        next_step = target
-        until next_step.nil?
-            path_arr << next_step
-            next_step = @all_seen_words[next_step]
-        end
+  def add_to_all_seen_words(new_words_arr, current_word)
+    new_words_arr.each {|word| @all_seen_words[word] = current_word}
+  end
 
-        return path_arr.reverse
+  def build_path(target)
+    return nil unless @all_seen_words.include?(target)
+    path_arr = []
+    until target.nil?
+      path_arr.unshift(target)
+      target = @all_seen_words[target]
     end
+    path_arr
+  end
 
-    def explore_current_words
-        new_current_words = []
-        @current_words.each do |current_word|
-            adjacent_words(current_word).each do |adj_word|
-                unless @all_seen_words.has_key?(adj_word)
-                    @all_seen_words[adj_word] = current_word
-                    new_current_words << adj_word
-                end
-            end
-        end
-
-        return new_current_words
+  def run(source, target)
+    @current_words = [source]
+    @all_seen_words = {source => nil}
+    until @all_seen_words.include?(target) || @current_words.empty?
+      explore_current_words
     end
-
-        def adjacent_words(word)
-        # return all words in dictionary that are same len
-        # and differ by only one letter
-
-        @dictionary.select do |d_word|
-            if d_word.length != word.length
-                false
-            else
-                count = 0
-                word.each_char.with_index do |c, i|
-                    count += 1 if c != d_word[i]
-                end
-                count == 1
-            end
-
-        end
-    end
-
+    build_path(target)
+  end
 end
 
-w = WordChainer.new("dictionary.txt")
-p w.run("box", "cry")
+w = WordChainer.new
+
+p w.run("duck", "ruby")
