@@ -150,7 +150,7 @@ def make_better_change(amt, coins_arr)
   end
 
   coin_results_arr.delete(nil)
-  return nil if coin_results_arr.empty?
+  return [nil] if coin_results_arr.empty?
   coin_results_arr.sort {|arr1, arr2| arr1.length <=> arr2.length}.first
 
 
