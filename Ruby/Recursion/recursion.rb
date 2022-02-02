@@ -139,26 +139,33 @@ def greedy_make_change(amt, coins_arr)
   result_arr
 end
 
-def make_better_change(amt, coins_arr)
-  return [] if amt == 0
-  return [nil] if amt < coins_arr.last
+# return [] if amt == 0
+# return [nil] if amt < coins_arr.last
 
-  coin_results_arr = []
+# coin_results_arr = []
+# coins_arr.each_with_index do |coin, idx|
+#   next if coin > amt
+#   coin_results_arr << [coin] + make_better_change(amt - coin, coins_arr[idx..-1])
+# end
+
+# return nil if coin_results_arr.include?(nil)
+# coin_results_arr.sort {|arr1, arr2| arr1.length <=> arr2.length}.first
+def make_better_change(amt, coins_arr = [25, 10, 5, 1])
+  return [] if amt == 0
+  return nil if coins_arr.last > amt
+
+  best_change = nil
+
   coins_arr.each_with_index do |coin, idx|
     next if coin > amt
-    coin_results_arr << [coin] + make_better_change(amt - coin, coins_arr[idx..-1])
+    remainder = amt - coin
+    remaining_coins = coins_arr.drop(idx)
+    this_change = make_better_change(remainder, remaining_coins)
+    next if this_change.nil?
+    this_change.unshift(coin)
+    if best_change.nil? || best_change.length > this_change.length
+      best_change = this_change
+    end
   end
-
-  coin_results_arr.delete(nil)
-  return [nil] if coin_results_arr.empty?
-  coin_results_arr.sort {|arr1, arr2| arr1.length <=> arr2.length}.first
-
-
+  best_change
 end
-
-# p greedy_make_change(24, [10, 7, 1])
-# p make_better_change(24, [10, 7, 1])
-p make_better_change(23, [10, 7])
-
-# try to make the change return nil if there is no possible way to make proper change
-# while still returning the correct answer if there is a way
