@@ -53,7 +53,7 @@ class Board
     new_pos_arr = dirs(pos)
     bomb_count = new_pos_arr.count {|pos| self[pos] == "B"}
     if bomb_count == 0
-      self[pos] = " "
+      self[pos] = "_"
       new_pos_arr.each {|pos| reveal(pos) if self[pos] == "*"}
     else
       self[pos] = bomb_count.to_s
@@ -71,6 +71,9 @@ class Board
     dirs = [[1,1],[1,-1],[1,0],[-1,1],[-1,-1],[-1,0],[0,1],[0,-1]]
     new_pos_arr = dirs.map {|dir| [pos[0] + dir[0], pos[1] + dir[1]]}
     new_pos_arr.select {|pos| valid_pos(pos)}
+  end
+
+  def get_user_input
   end
 end
 
