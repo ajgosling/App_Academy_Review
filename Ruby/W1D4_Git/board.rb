@@ -84,7 +84,7 @@ class Board
 
   def get_user_input
     puts "enter `f` or `r` plus a position e.g. `f 3,4`"
-    user_input = gets.chomp.chars
+    user_input = clarify_user_input(gets.chomp.chars)
 
   end
 end
