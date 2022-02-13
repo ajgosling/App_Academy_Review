@@ -74,25 +74,44 @@ class Board
     new_pos_arr.select {|pos| valid_pos(pos)}
   end
 
-  def clarify_user_input(arr)
-    command = user_input[0]
+  def clarify_user_input(user_input)
+    command = user_input[0].downcase
     return false unless "fr".include?(command)
     user_input.select! {|char| "0123456789,".include?(char)}
     pos_arr = user_input.join.split(",")
-    p pos_arr
+    pos_arr.map! {|el| el.to_i - 1}
+    return false unless pos_arr.length == 2
+    return false unless pos_arr.all? {|num| num >= 0 && num < size_arr[0]}
+    return [command, pos_arr]
   end
 
   def get_user_input
+    puts "f for `flag`, r for `reveal`"
     puts "enter `f` or `r` plus a position e.g. `f 3,4`"
     user_input = clarify_user_input(gets.chomp.chars)
+    until user_input
+      user_input = clarify_user_input(gets.chomp.chars)
+    end
+    user_input
+  end
 
+  def handle_user_input(user_input_arr)
+    command, pos = user_input_arr
+    if command == "f"
+      flag(pos)
+    else
+      reveal(pos)
+    end
   end
 end
 
 if __FILE__ == $PROGRAM_NAME
   b = Board.generate_random_board
-  b.reveal([5,5])
+  # b.reveal([5,5])
   b.display
   # debugger
-  p b.get_user_input
+  while true
+    b.handle_user_input(b.get_user_input)
+    b.display
+  end
 end
