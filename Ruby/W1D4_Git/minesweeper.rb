@@ -40,15 +40,17 @@ class Minesweeper
     @board.display
   end
 
-  # CONTINUE CODING OUT GAME OVER FUNCTION AND PLAY FUNCTION
   def game_over?
     @board.won? || @board.lost?
   end
 
 
   def play
-    # display
-    # until handle_user_input(get_user_input)
+    until game_over?
+      display
+      until handle_user_input(get_user_input)
+      end
+    end
   end
 end
 

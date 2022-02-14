@@ -71,4 +71,12 @@ class Board
     new_pos_arr = dirs.map {|dir| [pos[0] + dir[0], pos[1] + dir[1]]}
     new_pos_arr.select {|pos| valid_pos(pos)}
   end
+
+  def won?
+    @grid.flatten.none? {|tile| tile.bomb && !tile.explored?}
+  end
+
+  def lost?
+    @grid.flatten.any? {|tile| tile.bomb? && tile.explored?}
+  end
 end
