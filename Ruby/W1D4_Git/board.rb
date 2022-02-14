@@ -27,9 +27,9 @@ class Board
   end
 
   def display
-    puts "  #{(1..size_arr.last).to_a.join(" ")}"
+    puts "  #{(1..size_arr.last).to_a.join(" ")}".red
     @grid.each_with_index do |row, i|
-      puts "#{i + 1} #{row.join(" ")}"
+      puts "#{(i + 1).to_s.red} #{row.join(" ")}"
     end
   end
 
@@ -73,10 +73,6 @@ class Board
   end
 
   def won?
-    @grid.flatten.none? {|tile| tile.bomb && !tile.explored?}
-  end
-
-  def lost?
-    @grid.flatten.any? {|tile| tile.bomb? && tile.explored?}
+    @grid.flatten.none? {|tile| !tile.bomb? && !tile.explored?}
   end
 end

@@ -1,6 +1,7 @@
+require 'colorize'
 class Tile
   def initialize
-    @symbol = "*" # star will represent an unexplored square
+    @symbol = "*".blue # star will represent an unexplored square
     @bomb, @explored, @flagged = false, false, false
   end
 
@@ -18,7 +19,7 @@ class Tile
 
   def explore(str_num)
     if str_num == "0"
-      @symbol = "_"
+      @symbol = " "
     else
       @symbol = str_num
     end
@@ -27,6 +28,7 @@ class Tile
 
   def flag
     @flagged = !@flagged
+    true
   end
 
   def flagged?
@@ -34,6 +36,6 @@ class Tile
   end
 
   def to_s
-    flagged? ? "F" : @symbol
+    flagged? ? "F".yellow : @symbol
   end
 end
