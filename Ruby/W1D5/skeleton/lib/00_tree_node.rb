@@ -7,29 +7,31 @@ class PolyTreeNode
   end
 
   def parent=(parent_node)
-    # if we have a parent
-    if parent_node
-      # parent_node is real
-      return nil if parent_node.include?(self)
-      @parent = parent_node
-      parent_node.add_child(self)
-    end
+    parent_node.add_child(self) if parent_node
+    @parent.remove_child(self) if @parent
+    @parent = parent_node
+
   end
 
   def include?(node)
-    @children.each_with_index do |child, i|
-      return i if child == node
+    @children.each_with_index do |child, idx|
+      if node == child
+        return idx
+      end
     end
-    nil
+    return nil
   end
 
   def add_child(node)
-    return nil if include?(node)
-    @children << node
+    @children << node unless include?(node)
   end
 
-  def delete_child(node)
-    child_idx = include?(node)
-    @children.delete_at(child_idx) if child_idx
+  def remove_child(node)
+    @children.each_with_index do |child, idx|
+      if node == child
+        return @children.delete_at(idx)
+      end
+    end
+    return nil
   end
 end
