@@ -48,9 +48,23 @@ class KnightPathFinder
     end
     @root_node
   end
+
+  def find_path(target_pos)
+    curr_node = @root_node.dfs(target_pos)
+    raise "invalid position entered" unless curr_node
+    path_arr = []
+    while curr_node
+      path_arr.unshift(curr_node)
+      curr_node = curr_node.parent
+    end
+
+    path_arr
+  end
+
 end
 
 if __FILE__ == $PROGRAM_NAME
   k = KnightPathFinder.new([0,0])
-  p k.root_node
+  p k.find_path([5,5])
+  p k.find_path([0,1])
 end
