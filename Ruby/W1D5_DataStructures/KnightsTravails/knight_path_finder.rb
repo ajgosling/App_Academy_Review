@@ -1,87 +1,70 @@
-require_relative '00_tree_node'
-
-POS_CHANGES = [
-    [2, 1],
-    [2, -1],
-    [-2, 1],
-    [-2, -1],
-    [1, 2],
-    [1, -2],
-    [-1, 2],
-    [-1, -2]
-]
+require_relative "lib/00_tree_node.rb"
 
 class KnightPathFinder
-    attr_reader :root_node
+  def KnightPathFinder.valid_moves(pos)
+    moves = [
+      [1, 2],
+      [1, -2],
+      [-1, 2],
+      [-1, -2],
+      [2, 1],
+      [2, -1],
+      [-2, 1],
+      [-2, -1]
+    ]
 
-    def initialize(start_pos)
-        @root_node = PolyTreeNode.new(start_pos)
-        build_move_tree
+    moves.map! {|move| [pos[0] + move[0], pos[1] + move[1]]}
+    moves.select {|move| KnightPathFinder.valid_pos(move)}
+  end
+
+  def KnightPathFinder.valid_pos(pos)
+    pos.all? {|num| num >= 0 && num <= 7}
+  end
+
+  attr_reader :root_node
+  def initialize(pos)
+    @root_node = PolyTreeNode.new(pos)
+    @considered_positions = [pos]
+    build_move_tree
+  end
+
+  def new_move_positions(node)
+    pos_arr = KnightPathFinder.valid_moves(node.value)
+    pos_arr.reject! {|pos| @considered_positions.include?(pos)}
+    @considered_positions += pos_arr
+    pos_arr
+  end
+
+  def build_move_tree
+    queue = [@root_node]
+    until queue.empty?
+      curr_node = queue.shift
+      pos_arr = new_move_positions(curr_node)
+      pos_arr.each do |pos|
+        new_node = PolyTreeNode.new(pos)
+        curr_node.add_child(new_node)
+      end
+      queue += curr_node.children
+    end
+    @root_node
+  end
+
+  def find_path(target_pos)
+    curr_node = @root_node.dfs(target_pos)
+    raise "invalid position entered" unless curr_node
+    path_arr = []
+    while curr_node
+      path_arr.unshift(curr_node)
+      curr_node = curr_node.parent
     end
 
-    def find_path(end_pos)
-        return nil unless end_pos.all? {|pos| pos >= 0 && pos <= 7}
+    path_arr
+  end
 
-        queue = [@root_node]
-
-        until queue.empty?
-            curr_node = queue.shift
-            return trace_back_path(curr_node) if curr_node.value == end_pos
-            queue += curr_node.children
-        end
-
-        return nil
-    end
-
-    def trace_back_path(node)
-        value_list = []
-        until node.nil?
-            value_list.unshift(node.value)
-            node = node.parent
-        end
-
-        return value_list
-    end
-
-    def build_move_tree
-        @considered_positions = [@root_node.value]
-        queue = [@root_node]
-        until queue.empty?
-            next_node = queue.shift
-            new_moves = new_move_positions(next_node.value)
-            new_moves.each do |move|
-                # make a polytreenode with move as pos
-                new_child = PolyTreeNode.new(move)
-                next_node.add_child(new_child)
-                queue << new_child
-            end
-        end
-
-        return @root_node
-
-    end
-
-    def new_move_positions(pos)
-        possible_moves = KnightPathFinder.valid_moves(pos)
-
-        new_moves = possible_moves.reject do |move|
-            @considered_positions.include?(move)
-        end
-
-        @considered_positions += new_moves
-        return new_moves
-    end
-
-    def self.valid_moves(pos)
-        valid_moves_arr = []
-        POS_CHANGES.each do |dir|
-            new_pos = [pos[0] + dir[0], pos[1] + dir[1]]
-            valid_moves_arr << new_pos if new_pos.all? {|val| val>=0 && val<=7}
-        end
-        return valid_moves_arr
-    end
 end
 
-kpf = KnightPathFinder.new([0,0])
-
-p kpf.find_path([7, 6])
+if __FILE__ == $PROGRAM_NAME
+  k = KnightPathFinder.new([0,0])
+  p k.find_path([5,5])
+  p k.find_path([0,1])
+end
